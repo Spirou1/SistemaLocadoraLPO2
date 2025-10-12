@@ -10,12 +10,14 @@ import java.util.Calendar;
  * @author enzo
  */
 public abstract class Veiculo implements VeiculoI {
+    
+    protected long id; 
 
     protected Marca marca;
     protected Estado estado;
     protected Locacao locacao; 
     protected Categoria categoria;
-    protected double valorDeCompra; 
+    public double valorDeCompra; 
     protected String placa; 
     protected int ano; 
 
@@ -63,8 +65,15 @@ public abstract class Veiculo implements VeiculoI {
             System.out.println("Veículo " + this.placa + " não está LOCADO para ser devolvido. Estado atual: " + this.estado);
         }
     }
+    
+    public long getId() {
+        return id;
+    }
+    
+    public void setId(long id) {
+        this.id = id;
+    }
 
-   
     public Estado getEstado() { 
         return estado;
     }

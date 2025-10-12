@@ -9,6 +9,8 @@ package com.suaempresa.locadora.model;
  * @author enzo
  */
 public class Cliente {
+    
+    private long id; 
     private String nome;
     private String sobrenome;
     private String cpf;
@@ -21,6 +23,14 @@ public class Cliente {
         this.cpf = cpf;
         this.rg = rg;
         this.endereco = endereco;
+    }
+    
+    public long getId() {
+        return id;
+    }
+    
+    public void setId(long id) {
+        this.id = id;
     }
     
     public String getNome() {
