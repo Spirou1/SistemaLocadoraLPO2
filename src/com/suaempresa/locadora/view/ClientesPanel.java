@@ -23,6 +23,7 @@ public class ClientesPanel extends javax.swing.JPanel {
 
   
     private ClienteTableModel clienteTableModel;
+    private com.suaempresa.locadora.controller.ClienteController clienteController;
 
     
     private javax.swing.JPanel panelFormulario;       
@@ -38,6 +39,7 @@ public class ClientesPanel extends javax.swing.JPanel {
         initComponents();
         this.clienteTableModel = new ClienteTableModel(new ArrayList<>());
         jTableClientes.setModel(this.clienteTableModel);
+        this.clienteController = new com.suaempresa.locadora.controller.ClienteController();
         this.setBorder(new EmptyBorder(30, 50, 30, 50));
         
 
@@ -171,6 +173,10 @@ public class ClientesPanel extends javax.swing.JPanel {
     txtEndereco.setText("");
     txtCPF.setEnabled(true);
 }
+
+    public void refreshTable() {
+        clienteTableModel.setClientes(clienteController.getAllClientes());
+    }
 
 
     /**
@@ -328,8 +334,26 @@ public class ClientesPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnIncluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIncluirActionPerformed
-        // TODO add your handling code here:
-        
+        String nome = txtNome.getText();
+        String sobrenome = txtSobrenome.getText();
+        String rg = txtRG.getText();
+        String cpf = txtCPF.getText();
+        String endereco = txtEndereco.getText();
+
+        if (nome.isEmpty() || sobrenome.isEmpty() || rg.isEmpty() || cpf.isEmpty() || endereco.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Todos os campos devem ser preenchidos.", "Erro de Validação", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        Cliente novoCliente = new Cliente(nome, sobrenome, cpf, rg, endereco);
+
+        if (clienteController.incluirCliente(novoCliente)) {
+            JOptionPane.showMessageDialog(this, "Cliente incluído com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+            limparCamposCliente();
+            clienteTableModel.setClientes(clienteController.getAllClientes()); // Refresh table
+        } else {
+            JOptionPane.showMessageDialog(this, "Erro ao incluir cliente. Verifique o console para mais detalhes.", "Erro", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnIncluirActionPerformed
 
     private void btnAtualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtualizarActionPerformed

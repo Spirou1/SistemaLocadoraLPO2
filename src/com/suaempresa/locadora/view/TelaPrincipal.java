@@ -361,6 +361,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private void btnGerenciarClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGerenciarClientesActionPerformed
         // TODO add your handling code here:
         cardLayout.show(parentPanel, "card3");
+        clientesPanelInstancia.refreshTable();
     }//GEN-LAST:event_btnGerenciarClientesActionPerformed
 
     private void btnCadastrarVeiculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarVeiculoActionPerformed
