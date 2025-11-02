@@ -2,10 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package com.suaempresa.locadora.ui;
+package com.suaempresa.locadora.view;
 
-import com.suaempresa.locadora.model.GerenciadorClientes;
-import com.suaempresa.locadora.model.GerenciadorVeiculos;
+
 import java.awt.Component;
 import javax.swing.Box;
 import javax.swing.JLabel;
@@ -18,15 +17,13 @@ import javax.swing.border.EmptyBorder;
  */
 public class HomePanel extends javax.swing.JPanel {
 
-    private GerenciadorClientes gerenciadorClientes;
-    private GerenciadorVeiculos gerenciadorVeiculos;
+
     
     /**
      * Creates new form HomePanel
      */
-public HomePanel(GerenciadorClientes gc, GerenciadorVeiculos gv) {
-        this.gerenciadorClientes = gc;
-        this.gerenciadorVeiculos = gv;
+public HomePanel() {
+        
         initComponents(); 
         
         this.setBorder(new EmptyBorder(50, 50, 50, 50));
@@ -82,22 +79,8 @@ public HomePanel(GerenciadorClientes gc, GerenciadorVeiculos gv) {
 
         this.revalidate(); 
         this.repaint();   
-
-        carregarEstatisticas(); 
     }
     
-    public void carregarEstatisticas() {
-    int totalClientes = gerenciadorClientes.listarTodosClientes().size();
-    int totalVeiculos = gerenciadorVeiculos.listarTodosVeiculos().size();
-    int veiculosDisponiveis = gerenciadorVeiculos.listarVeiculosDisponiveisParaLocacao().size();
-    int veiculosLocados = gerenciadorVeiculos.listarVeiculosLocados().size();
-
-   
-    lblTotalClientes.setText(String.valueOf(totalClientes)); 
-    lblTotalVeiculos.setText(String.valueOf(totalVeiculos));
-    lblVeiculosDisponiveis.setText(String.valueOf(veiculosDisponiveis));
-    lblVeiculosLocados.setText(String.valueOf(veiculosLocados));
-}
     
     private JPanel createAlignedLabelPair(JLabel textLabel, JLabel numberLabel) {
         JPanel pairPanel = new JPanel();

@@ -2,11 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package com.suaempresa.locadora.ui;
+package com.suaempresa.locadora.view;
 
 import com.suaempresa.locadora.model.Cliente;
-import com.suaempresa.locadora.model.GerenciadorClientes;
-import com.suaempresa.locadora.model.GerenciadorVeiculos;
 import com.suaempresa.locadora.model.Veiculo;
 import com.suaempresa.locadora.model.Estado; 
 import com.suaempresa.locadora.ui.tables.ClienteTableModel;
@@ -26,6 +24,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable; 
 import javax.swing.JTextField;
 import java.awt.FlowLayout;
+import java.util.ArrayList;
 import javax.swing.border.EmptyBorder;
 
 /**
@@ -34,8 +33,6 @@ import javax.swing.border.EmptyBorder;
  */
 public class VeiculoLocacaoPanel extends javax.swing.JPanel {
 
-    private GerenciadorClientes gerenciadorClientes;
-    private GerenciadorVeiculos gerenciadorVeiculos;
     private ClienteTableModel clienteTableModel;
     private VeiculoTableModel veiculoTableModel;
 
@@ -51,10 +48,11 @@ public class VeiculoLocacaoPanel extends javax.swing.JPanel {
     /**
      * Creates new form VeiculoLocacaoPanel
      */
-    public VeiculoLocacaoPanel(GerenciadorClientes gc, GerenciadorVeiculos gv) {
-        this.gerenciadorClientes = gc;
-        this.gerenciadorVeiculos = gv;
+    public VeiculoLocacaoPanel() {
+        
         initComponents(); 
+        this.clienteTableModel = new ClienteTableModel(new ArrayList<>());
+        this.veiculoTableModel = new VeiculoTableModel(new ArrayList<>(), true);
         this.setBorder(new EmptyBorder(30, 50, 30, 50));
 
         
@@ -141,24 +139,18 @@ public class VeiculoLocacaoPanel extends javax.swing.JPanel {
         this.repaint();    
 
         
-        clienteTableModel = new ClienteTableModel(gerenciadorClientes.listarTodosClientes());
+      
         jTableClientes.setModel(clienteTableModel);
         jTableClientes.setAutoCreateRowSorter(true);
 
-        veiculoTableModel = new VeiculoTableModel(gerenciadorVeiculos.listarVeiculosDisponiveisParaLocacao(), true);
+      
         jTableVeiculos.setModel(veiculoTableModel);
         jTableVeiculos.setAutoCreateRowSorter(true);
         addTableSelectionListeners();
-        carregarDadosTabelas(); 
+      
     }
     
-    public void carregarDadosTabelas() {
-       
-        clienteTableModel.setClientes(gerenciadorClientes.listarTodosClientes());
-
-        
-        veiculoTableModel.setVeiculos(gerenciadorVeiculos.listarVeiculosDisponiveisParaLocacao());
-    }
+    
     
     private void addTableSelectionListeners() {
         jTableClientes.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
@@ -201,7 +193,6 @@ public class VeiculoLocacaoPanel extends javax.swing.JPanel {
         veiculoSelecionado = null;
         jTableClientes.clearSelection();
         jTableVeiculos.clearSelection();
-        carregarDadosTabelas(); 
     }
 
     
@@ -343,85 +334,16 @@ public class VeiculoLocacaoPanel extends javax.swing.JPanel {
 
     private void btnBuscarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarClienteActionPerformed
         // TODO add your handling code here:
-        String cpf = txtCPFCliente.getText().trim(); 
- 
-        if (cpf.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Por favor, digite o CPF do cliente para buscar.", "Atenção", JOptionPane.WARNING_MESSAGE);
-            clienteTableModel.setClientes(gerenciadorClientes.listarTodosClientes()); 
-            return;
-        }
- 
-        Cliente clienteEncontrado = gerenciadorClientes.buscarClientePorCpf(cpf);
-        if (clienteEncontrado != null) {
-            
-            clienteTableModel.setClientes(Collections.singletonList(clienteEncontrado));
-        } else {
-            JOptionPane.showMessageDialog(this, "Cliente com CPF " + cpf + " não encontrado.", "Busca de Cliente", JOptionPane.INFORMATION_MESSAGE);
-            clienteTableModel.setClientes(gerenciadorClientes.listarTodosClientes()); 
-        }
+        
     }//GEN-LAST:event_btnBuscarClienteActionPerformed
 
     private void btnBuscarVeiculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarVeiculoActionPerformed
         // TODO add your handling code here:
-        String placa = txtPlaca.getText().trim();
-
-        if (placa.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Por favor, digite a placa do veículo para buscar.", "Atenção", JOptionPane.WARNING_MESSAGE);
-            veiculoTableModel.setVeiculos(gerenciadorVeiculos.listarVeiculosDisponiveisParaLocacao()); 
-            return;
-        }
- 
-        Veiculo veiculoEncontrado = gerenciadorVeiculos.buscarVeiculoPorPlaca(placa);
         
-        if (veiculoEncontrado != null && veiculoEncontrado.getEstado() == Estado.DISPONIVEL) {
-            
-            veiculoTableModel.setVeiculos(Collections.singletonList(veiculoEncontrado));
-        } else {
-            JOptionPane.showMessageDialog(this, "Veículo com placa " + placa + " não encontrado ou não está disponível para locação.", "Busca de Veículo", JOptionPane.INFORMATION_MESSAGE);
-            veiculoTableModel.setVeiculos(gerenciadorVeiculos.listarVeiculosDisponiveisParaLocacao()); 
-        }
     }//GEN-LAST:event_btnBuscarVeiculoActionPerformed
 
     private void btnLocarVeiculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLocarVeiculoActionPerformed
-        // TODO add your handling code here:
-         if (veiculoSelecionado == null) {
-            JOptionPane.showMessageDialog(this, "Por favor, selecione um veículo na tabela de veículos.", "Erro de Locação", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        if (clienteSelecionado == null) {
-            JOptionPane.showMessageDialog(this, "Por favor, selecione um cliente na tabela de clientes.", "Erro de Locação", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        String diasStr = txtDiasLocacao.getText().trim();
-        if (diasStr.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Informe a quantidade de dias para locação.", "Erro de Locação", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        int dias;
-        try {
-            dias = Integer.parseInt(diasStr);
-            if (dias <= 0) {
-                JOptionPane.showMessageDialog(this, "A quantidade de dias deve ser um número positivo.", "Erro de Locação", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Quantidade de dias inválida. Use apenas números inteiros.", "Erro de Formato", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
         
-        Calendar dataLocacao = Calendar.getInstance();
-
-        boolean sucesso = gerenciadorVeiculos.locarVeiculo(veiculoSelecionado.getPlaca(), dias, dataLocacao, clienteSelecionado);
-        if (sucesso) {
-            JOptionPane.showMessageDialog(this, "Veículo " + veiculoSelecionado.getPlaca() + " locado para " + clienteSelecionado.getNome() + " por " + dias + " dias.", "Locação Realizada", JOptionPane.INFORMATION_MESSAGE);
-            limparCamposESelecoes(); 
-        } else {
-            
-            JOptionPane.showMessageDialog(this, "Não foi possível locar o veículo. Verifique o console para mais detalhes.", "Erro na Locação", JOptionPane.ERROR_MESSAGE);
-        }
     }//GEN-LAST:event_btnLocarVeiculoActionPerformed
 
 

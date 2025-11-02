@@ -2,10 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package com.suaempresa.locadora.ui;
+package com.suaempresa.locadora.view;
 
 
-import com.suaempresa.locadora.model.GerenciadorVeiculos;
+
 import com.suaempresa.locadora.model.Veiculo; 
 import com.suaempresa.locadora.ui.tables.VeiculoTableModel; 
 import java.util.List;
@@ -14,6 +14,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener; 
 
 import java.awt.Component; 
+import java.util.ArrayList;
 import javax.swing.Box; 
 import javax.swing.JLabel; 
 import javax.swing.JPanel; 
@@ -28,7 +29,7 @@ import javax.swing.border.EmptyBorder;
  */
 public class VeiculoDevolucaoPanel extends javax.swing.JPanel {
 
-    private GerenciadorVeiculos gerenciadorVeiculos;
+
     private VeiculoTableModel veiculoTableModel; 
     private Veiculo veiculoSelecionado;
     
@@ -36,9 +37,10 @@ public class VeiculoDevolucaoPanel extends javax.swing.JPanel {
     /**
      * Creates new form VeiculoDevolucaoPanel
      */
-    public VeiculoDevolucaoPanel(GerenciadorVeiculos gv) {
-        this.gerenciadorVeiculos = gv;
+    public VeiculoDevolucaoPanel() {
+ 
         initComponents(); 
+        this.veiculoTableModel = new VeiculoTableModel(new ArrayList<>(), "DEVOLUCAO");
         this.setBorder(new EmptyBorder(30, 50, 30, 50));
 
         
@@ -89,23 +91,13 @@ public class VeiculoDevolucaoPanel extends javax.swing.JPanel {
         this.repaint();    
 
         
-        veiculoTableModel = new VeiculoTableModel(gerenciadorVeiculos.listarVeiculosLocados(), "DEVOLUCAO");
+  
         jTableVeiculosLocados.setModel(veiculoTableModel);
         jTableVeiculosLocados.setAutoCreateRowSorter(true);
         addTableSelectionListener();
     }
     
-    public void carregarTabelaVeiculosLocados() {
-    
-    List<Veiculo> veiculos = gerenciadorVeiculos.listarVeiculosLocados();
-
-    
-    veiculoTableModel.setVeiculos(veiculos);
-
-    
-    jTableVeiculosLocados.clearSelection();
-    veiculoSelecionado = null;
-    }
+   
     
     private void addTableSelectionListener() {
     jTableVeiculosLocados.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
@@ -191,29 +183,7 @@ public class VeiculoDevolucaoPanel extends javax.swing.JPanel {
 
     private void btnDevolverVeiculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDevolverVeiculoActionPerformed
         // TODO add your handling code here:
-        if (veiculoSelecionado == null) {
-        JOptionPane.showMessageDialog(this, "Por favor, selecione um veículo na tabela para devolver.", "Erro de Devolução", JOptionPane.WARNING_MESSAGE);
-        return;
-    }
-
-    int confirm = JOptionPane.showConfirmDialog(this,
-            "Confirmar devolução do veículo " + veiculoSelecionado.getPlaca() + "?",
-            "Confirmar Devolução", JOptionPane.YES_NO_OPTION);
-
-    if (confirm == JOptionPane.YES_OPTION) {
-        boolean sucesso = gerenciadorVeiculos.devolverVeiculo(veiculoSelecionado.getPlaca());
-
-        if (sucesso) {
-            JOptionPane.showMessageDialog(this, "Veículo " + veiculoSelecionado.getPlaca() + " devolvido com sucesso!", "Devolução Realizada", JOptionPane.INFORMATION_MESSAGE);
-            carregarTabelaVeiculosLocados(); 
-            
-            jTableVeiculosLocados.clearSelection();
-            veiculoSelecionado = null;
-        } else {
-           
-            JOptionPane.showMessageDialog(this, "Não foi possível devolver o veículo. Verifique o console.", "Erro na Devolução", JOptionPane.ERROR_MESSAGE);
-        }
-    }
+        
     }//GEN-LAST:event_btnDevolverVeiculoActionPerformed
 
 

@@ -2,13 +2,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package com.suaempresa.locadora.ui;
+package com.suaempresa.locadora.view;
 
 import com.suaempresa.locadora.model.Cliente;
-import com.suaempresa.locadora.model.GerenciadorClientes;
-import com.suaempresa.locadora.model.GerenciadorVeiculos;
 import com.suaempresa.locadora.ui.tables.ClienteTableModel;
 import java.awt.Component;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.Box;
 import javax.swing.JLabel;
@@ -22,8 +21,7 @@ import javax.swing.border.EmptyBorder;
  */
 public class ClientesPanel extends javax.swing.JPanel {
 
-    private GerenciadorClientes gerenciadorClientes; 
-    private GerenciadorVeiculos gerenciadorVeiculos;
+  
     private ClienteTableModel clienteTableModel;
 
     
@@ -35,10 +33,11 @@ public class ClientesPanel extends javax.swing.JPanel {
     /**
      * Creates new form ClientesPanel
      */
-    public ClientesPanel(GerenciadorClientes gc, GerenciadorVeiculos gv) {
-        this.gerenciadorClientes = gc;
-        this.gerenciadorVeiculos = gv;
+    public ClientesPanel() {
+        
         initComponents();
+        this.clienteTableModel = new ClienteTableModel(new ArrayList<>());
+        jTableClientes.setModel(this.clienteTableModel);
         this.setBorder(new EmptyBorder(30, 50, 30, 50));
         
 
@@ -125,7 +124,6 @@ public class ClientesPanel extends javax.swing.JPanel {
         this.revalidate(); 
         this.repaint();    
 
-        carregarTabelaClientes();
 
         
         jTableClientes.getSelectionModel().addListSelectionListener(e -> {
@@ -163,17 +161,7 @@ public class ClientesPanel extends javax.swing.JPanel {
         return pairPanel;
     }
     
-    public void carregarTabelaClientes() {
-        List<Cliente> clientes = gerenciadorClientes.listarTodosClientes();
-        
-        if (clienteTableModel == null) {
-            clienteTableModel = new ClienteTableModel(clientes);
-            jTableClientes.setModel(clienteTableModel);
-        } else {
-            clienteTableModel.setClientes(clientes);
-        }
-        jTableClientes.setAutoCreateRowSorter(true);
-    }
+    
     
     private void limparCamposCliente() {
     txtNome.setText("");
@@ -341,75 +329,17 @@ public class ClientesPanel extends javax.swing.JPanel {
 
     private void btnIncluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIncluirActionPerformed
         // TODO add your handling code here:
-        String nome = txtNome.getText(); 
-    String sobrenome = txtSobrenome.getText();
-    String rg = txtRG.getText();
-    String cpf = txtCPF.getText();
-    String endereco = txtEndereco.getText();
-
-    if (nome.isEmpty() || nome.equals("jTextField1") ||
-        sobrenome.isEmpty() || sobrenome.equals("jTextField1") ||
-        rg.isEmpty() || rg.equals("jTextField1") ||
-        cpf.isEmpty() || cpf.equals("jTextField1") ||
-        endereco.isEmpty() || endereco.equals("jTextField1")) {
-        JOptionPane.showMessageDialog(this, "Todos os campos devem ser preenchidos corretamente.", "Erro de Cadastro", JOptionPane.ERROR_MESSAGE);
-        return;
-    }
-
-    Cliente novoCliente = new Cliente(nome, sobrenome, rg, cpf, endereco);
-    gerenciadorClientes.adicionarCliente(novoCliente);
-    JOptionPane.showMessageDialog(this, "Cliente " + nome + " cadastrado com sucesso!");
-    limparCamposCliente(); 
-    carregarTabelaClientes(); 
+        
     }//GEN-LAST:event_btnIncluirActionPerformed
 
     private void btnAtualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtualizarActionPerformed
         // TODO add your handling code here:
-        String cpf = txtCPF.getText(); 
-
-    
-    if (cpf.isEmpty() || txtNome.getText().isEmpty() || txtSobrenome.getText().isEmpty() ||
-        txtRG.getText().isEmpty() || txtEndereco.getText().isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Selecione um cliente na tabela e preencha todos os campos para atualizar.", "Erro de Atualização", JOptionPane.ERROR_MESSAGE);
-        return;
-    }
-
-    Cliente clienteAtualizado = new Cliente(txtNome.getText(), txtSobrenome.getText(), txtRG.getText(), cpf, txtEndereco.getText());
-
-    gerenciadorClientes.atualizarCliente(clienteAtualizado);
-    JOptionPane.showMessageDialog(this, "Cliente " + clienteAtualizado.getNome() + " atualizado com sucesso!");
-    limparCamposCliente();
-    txtCPF.setEnabled(true); 
-    carregarTabelaClientes();
+        
     }//GEN-LAST:event_btnAtualizarActionPerformed
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
         // TODO add your handling code here:
-        int selectedRow = jTableClientes.getSelectedRow(); 
-    if (selectedRow >= 0) { 
         
-        int modelRow = jTableClientes.convertRowIndexToModel(selectedRow);
-        Cliente clienteParaExcluir = clienteTableModel.getClienteAt(modelRow);
-
-        if (clienteParaExcluir != null) {
-            int confirm = JOptionPane.showConfirmDialog(this,
-                    "Tem certeza que deseja excluir o cliente " + clienteParaExcluir.getNome() + " " + clienteParaExcluir.getSobrenome() + "?",
-                    "Confirmar Exclusão", JOptionPane.YES_NO_OPTION);
-
-            if (confirm == JOptionPane.YES_OPTION) {
-                
-                boolean excluido = gerenciadorClientes.excluirCliente(clienteParaExcluir.getCpf(), gerenciadorVeiculos);
-                if (excluido) {
-                    JOptionPane.showMessageDialog(this, "Cliente excluído com sucesso!");
-                    limparCamposCliente(); 
-                    txtCPF.setEnabled(true); 
-                    carregarTabelaClientes();
-                } 
-            }
-        }
-    } else {
-        JOptionPane.showMessageDialog(this, "Selecione um cliente na tabela para excluir.", "Atenção", JOptionPane.WARNING_MESSAGE);
-    }
     }//GEN-LAST:event_btnExcluirActionPerformed
 
 

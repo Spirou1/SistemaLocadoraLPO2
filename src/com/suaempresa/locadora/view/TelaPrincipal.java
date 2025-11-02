@@ -2,18 +2,17 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package com.suaempresa.locadora.ui;
+package com.suaempresa.locadora.view;
 
 import com.suaempresa.locadora.model.Automovel;
 import com.suaempresa.locadora.model.Categoria;
 import com.suaempresa.locadora.model.Cliente;
 import com.suaempresa.locadora.model.Estado;
-import com.suaempresa.locadora.model.GerenciadorClientes; 
-import com.suaempresa.locadora.model.GerenciadorVeiculos;
 import com.suaempresa.locadora.model.Marca;
 import com.suaempresa.locadora.model.ModeloAutomovel;
 import com.suaempresa.locadora.model.ModeloMotocicleta;
 import com.suaempresa.locadora.model.Motocicleta;
+import com.suaempresa.locadora.view.HomePanel;
 import java.awt.CardLayout;
 import java.awt.Component;
 import javax.swing.Box;
@@ -28,8 +27,6 @@ public class TelaPrincipal extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(TelaPrincipal.class.getName());
     
-    private GerenciadorClientes gerenciadorClientes;
-    private GerenciadorVeiculos gerenciadorVeiculos;
     private CardLayout cardLayout;
     
     private HomePanel homePanelInstancia;
@@ -43,9 +40,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
     /**
      * Creates new form TelaPrincipal
      */
-    public TelaPrincipal(GerenciadorClientes gc, GerenciadorVeiculos gv) {
-        this.gerenciadorClientes = gc;
-        this.gerenciadorVeiculos = gv;
+    public TelaPrincipal() {
+       
         
         initComponents();
         
@@ -108,22 +104,22 @@ public class TelaPrincipal extends javax.swing.JFrame {
         jPanel2.revalidate(); 
         jPanel2.repaint();    
 
-        this.homePanelInstancia = new HomePanel(this.gerenciadorClientes, this.gerenciadorVeiculos);
+        this.homePanelInstancia = new HomePanel();
         parentPanel.add(new JScrollPane(homePanelInstancia), "card4"); 
 
-        this.clientesPanelInstancia = new ClientesPanel(this.gerenciadorClientes, this.gerenciadorVeiculos);
+        this.clientesPanelInstancia = new ClientesPanel();
         parentPanel.add(new JScrollPane(clientesPanelInstancia), "card3"); 
         
-        this.veiculoCadastroInstancia = new VeiculoCadastroPanel(this.gerenciadorVeiculos);
+        this.veiculoCadastroInstancia = new VeiculoCadastroPanel();
         parentPanel.add(new JScrollPane(veiculoCadastroInstancia), "card2");
         
-        this.veiculoLocacaoInstancia = new VeiculoLocacaoPanel(this.gerenciadorClientes, this.gerenciadorVeiculos);
+        this.veiculoLocacaoInstancia = new VeiculoLocacaoPanel();
         parentPanel.add(new JScrollPane(veiculoLocacaoInstancia), "card5"); 
         
-        this.veiculoDevolucaoPanelInstancia = new VeiculoDevolucaoPanel(this.gerenciadorVeiculos);
+        this.veiculoDevolucaoPanelInstancia = new VeiculoDevolucaoPanel();
         parentPanel.add(new JScrollPane(veiculoDevolucaoPanelInstancia), "card6");
         
-        this.veiculoVendaPanelInstancia = new VeiculoVendaPanel(this.gerenciadorVeiculos);
+        this.veiculoVendaPanelInstancia = new VeiculoVendaPanel();
         parentPanel.add(new JScrollPane(veiculoVendaPanelInstancia), "card7");
 
         cardLayout.show(parentPanel, "card4"); 
@@ -360,9 +356,6 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private void btnHomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHomeActionPerformed
         // TODO add your handling code here:
         cardLayout.show(parentPanel, "card4");
-        if (homePanelInstancia != null) {
-        homePanelInstancia.carregarEstatisticas();
-    }
     }//GEN-LAST:event_btnHomeActionPerformed
 
     private void btnGerenciarClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGerenciarClientesActionPerformed
@@ -383,80 +376,19 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private void btnDevolverVeiculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDevolverVeiculoActionPerformed
         // TODO add your handling code here:
         cardLayout.show(parentPanel, "card6");
-        if (veiculoDevolucaoPanelInstancia != null) {
-            veiculoDevolucaoPanelInstancia.carregarTabelaVeiculosLocados();
-        } 
+        
     }//GEN-LAST:event_btnDevolverVeiculoActionPerformed
 
     private void btnVenderVeiculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVenderVeiculoActionPerformed
         // TODO add your handling code here:
         cardLayout.show(parentPanel, "card7");
-        if (veiculoVendaPanelInstancia != null) {
-        veiculoVendaPanelInstancia.carregarTabelaVeiculosParaVenda();
-        } 
+        
     }//GEN-LAST:event_btnVenderVeiculoActionPerformed
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
     
-
-    /* Create and display the form */
-    java.awt.EventQueue.invokeLater(() -> {
-        
-        GerenciadorClientes gc = new GerenciadorClientes();
-        GerenciadorVeiculos gv = new GerenciadorVeiculos();
-        
-        
-        Cliente cliente1 = new Cliente("Joao", "Silva", "123456789", "111.222.333-44", "Rua A, 100");
-        gc.adicionarCliente(cliente1);
-
-        Cliente cliente2 = new Cliente("Maria", "Souza", "987654321", "555.666.777-88", "Av. B, 200");
-        gc.adicionarCliente(cliente2);
-
-        Cliente cliente3 = new Cliente("Pedro", "Almeida", "456789123", "999.888.777-66", "Travessa C, 300");
-        gc.adicionarCliente(cliente3);
-        
-        Automovel carro1 = new Automovel(
-            Marca.FIAT,
-            Estado.DISPONIVEL, 
-            Categoria.POPULAR,
-            30000.0, "ABC-1234", 2020, ModeloAutomovel.Civic
-        );
-        gv.adicionarVeiculo(carro1);
-        
-        Automovel carro2 = new Automovel(
-            Marca.VW,
-            Estado.DISPONIVEL, 
-            Categoria.INTERMEDIARIO,
-            55000.0, "XYZ-5678", 2022, ModeloAutomovel.Gol
-        );
-        gv.adicionarVeiculo(carro2);
-        
-        Motocicleta moto1 = new Motocicleta(
-            Marca.HONDA,
-            Estado.NOVO, 
-            Categoria.LUXO,
-            25000.0, "MOTO-9012", 2023, ModeloMotocicleta.CBR500
-        );
-        gv.adicionarVeiculo(moto1);
-        
-        Automovel carro5 = new Automovel(
-        Marca.HONDA,
-        Estado.DISPONIVEL,
-        Categoria.INTERMEDIARIO,
-        80000.0, "AAA-1234", 2022, ModeloAutomovel.Civic);
-        gv.adicionarVeiculo(carro5);
-        
-        TelaPrincipal frame = new TelaPrincipal(gc, gv);
-        frame.setVisible(true);
-        
-        if (frame.homePanelInstancia != null) { 
-            frame.homePanelInstancia.carregarEstatisticas();
-        } 
-    });
-}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCadastrarVeiculo;

@@ -2,10 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package com.suaempresa.locadora.ui;
+package com.suaempresa.locadora.view;
 
 
-import com.suaempresa.locadora.model.GerenciadorVeiculos;
+
 import com.suaempresa.locadora.model.Veiculo;
 import com.suaempresa.locadora.model.Marca;
 import com.suaempresa.locadora.model.Categoria;
@@ -19,7 +19,8 @@ import java.text.NumberFormat;
 import java.util.Locale; 
 import java.util.List;
 import com.suaempresa.locadora.model.Estado;
-import com.suaempresa.locadora.model.GerenciadorVeiculos.TipoVeiculo;
+import com.suaempresa.locadora.model.TipoVeiculo;
+
 
 import java.awt.Component; 
 import javax.swing.Box; 
@@ -30,6 +31,7 @@ import javax.swing.JTable;
 import javax.swing.JComboBox; 
 import javax.swing.JButton;
 import java.awt.FlowLayout;
+import java.util.ArrayList;
 import javax.swing.border.EmptyBorder;
 
 
@@ -39,15 +41,16 @@ import javax.swing.border.EmptyBorder;
  */
 public class VeiculoVendaPanel extends javax.swing.JPanel {
 
-    private GerenciadorVeiculos gerenciadorVeiculos;
+   
     private VeiculoTableModel veiculoTableModel;
     private Veiculo veiculoSelecionado;
     /**
      * Creates new form VeiculoVendaPanel
      */
-    public VeiculoVendaPanel(GerenciadorVeiculos gv) {
-        this.gerenciadorVeiculos = gv;
+    public VeiculoVendaPanel() {
+        
         initComponents(); 
+        this.veiculoTableModel = new VeiculoTableModel(new ArrayList<>(), false);
         this.setBorder(new EmptyBorder(30, 50, 30, 50));
 
         
@@ -119,12 +122,12 @@ public class VeiculoVendaPanel extends javax.swing.JPanel {
         this.repaint();   
 
         
-        configurarComboBoxesFiltro();
-        veiculoTableModel = new VeiculoTableModel(gerenciadorVeiculos.listarVeiculosDisponiveisParaVenda(), false);
+        
+       
         jTableVeiculosParaVenda.setModel(veiculoTableModel);
         jTableVeiculosParaVenda.setAutoCreateRowSorter(true); 
         addTableSelectionListener(); 
-        carregarTabelaVeiculosParaVenda(); 
+      
     }
     
     private JPanel createComboBoxFilterPair(JLabel label, javax.swing.JComboBox<?> comboBox) {
@@ -142,45 +145,9 @@ public class VeiculoVendaPanel extends javax.swing.JPanel {
         return pairPanel;
     }
     
-    private void configurarComboBoxesFiltro() {
-    cmbTipoVeiculoFiltro.setModel(new DefaultComboBoxModel<>(TipoVeiculo.values()));
-    cmbTipoVeiculoFiltro.setSelectedItem(TipoVeiculo.TODOS);
-
-    
-    Marca[] marcas = Marca.values();
-    Marca[] marcasComTodos = new Marca[marcas.length + 1];
-    marcasComTodos[0] = null; 
-    System.arraycopy(marcas, 0, marcasComTodos, 1, marcas.length);
-    cmbMarcaFiltro.setModel(new DefaultComboBoxModel<>(marcasComTodos));
-    cmbMarcaFiltro.setSelectedIndex(0); 
-
-    
-    Categoria[] categorias = Categoria.values();
-    Categoria[] categoriasComTodos = new Categoria[categorias.length + 1];
-    categoriasComTodos[0] = null; 
-    System.arraycopy(categorias, 0, categoriasComTodos, 1, categorias.length);
-    cmbCategoriaFiltro.setModel(new DefaultComboBoxModel<>(categoriasComTodos));
-    cmbCategoriaFiltro.setSelectedIndex(0);
-    }
-    
-    public void carregarTabelaVeiculosParaVenda() {
-    
-    GerenciadorVeiculos.TipoVeiculo tipo = (GerenciadorVeiculos.TipoVeiculo) cmbTipoVeiculoFiltro.getSelectedItem();
-    Marca marca = (Marca) cmbMarcaFiltro.getSelectedItem(); 
-    Categoria categoria = (Categoria) cmbCategoriaFiltro.getSelectedItem(); 
-
-   
-    List<Veiculo> veiculosFiltrados = gerenciadorVeiculos.filtrarVeiculos(tipo, marca, categoria);
     
     
-    veiculosFiltrados.removeIf(v -> v.getEstado() != com.suaempresa.locadora.model.Estado.DISPONIVEL);
-
-    System.out.println("DEBUG: Carregando tabela de veículos para venda. Encontrados: " + veiculosFiltrados.size());
-    veiculoTableModel.setVeiculos(veiculosFiltrados); 
     
-    jTableVeiculosParaVenda.clearSelection();
-    veiculoSelecionado = null;
-}
 
     private void addTableSelectionListener() {
     jTableVeiculosParaVenda.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
@@ -303,34 +270,15 @@ public class VeiculoVendaPanel extends javax.swing.JPanel {
 
     private void btnFiltrarVeiculosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltrarVeiculosActionPerformed
         // TODO add your handling code here:
-        carregarTabelaVeiculosParaVenda();
+       
     }//GEN-LAST:event_btnFiltrarVeiculosActionPerformed
 
     private void btnVenderVeiculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVenderVeiculoActionPerformed
         // TODO add your handling code here:
-        if (veiculoSelecionado == null) {
-        JOptionPane.showMessageDialog(this, "Por favor, selecione um veículo na tabela para vender.", "Erro de Venda", JOptionPane.WARNING_MESSAGE);
-        return;
-    }
+        
+    
 
-    int confirm = JOptionPane.showConfirmDialog(this,
-            "Confirmar venda do veículo " + veiculoSelecionado.getPlaca() + "?\n" +
-            "Valor de Venda Sugerido: " + NumberFormat.getCurrencyInstance(new Locale("pt", "BR")).format(veiculoSelecionado.getValorParaVenda()),
-            "Confirmar Venda", JOptionPane.YES_NO_OPTION);
-
-    if (confirm == JOptionPane.YES_OPTION) {
-        boolean sucesso = gerenciadorVeiculos.venderVeiculo(veiculoSelecionado.getPlaca());
-
-        if (sucesso) {
-            JOptionPane.showMessageDialog(this, "Veículo " + veiculoSelecionado.getPlaca() + " vendido com sucesso!", "Venda Realizada", JOptionPane.INFORMATION_MESSAGE);
-            carregarTabelaVeiculosParaVenda(); 
-            jTableVeiculosParaVenda.clearSelection(); 
-            veiculoSelecionado = null;
-        } else {
-           
-            JOptionPane.showMessageDialog(this, "Não foi possível vender o veículo. Verifique o console.", "Erro na Venda", JOptionPane.ERROR_MESSAGE);
-        }
-    }
+   
     }//GEN-LAST:event_btnVenderVeiculoActionPerformed
 
 

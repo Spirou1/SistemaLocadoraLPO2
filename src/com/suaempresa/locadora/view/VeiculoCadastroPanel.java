@@ -2,12 +2,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package com.suaempresa.locadora.ui;
+package com.suaempresa.locadora.view;
 
 import com.suaempresa.locadora.model.Automovel; // 
 import com.suaempresa.locadora.model.Categoria; // 
 import com.suaempresa.locadora.model.Estado; // 
-import com.suaempresa.locadora.model.GerenciadorVeiculos;
 import com.suaempresa.locadora.model.Marca; // 
 import com.suaempresa.locadora.model.ModeloAutomovel; // 
 import com.suaempresa.locadora.model.ModeloMotocicleta; // 
@@ -31,7 +30,6 @@ import javax.swing.border.EmptyBorder;
  */
 public class VeiculoCadastroPanel extends javax.swing.JPanel {
 
-    private GerenciadorVeiculos gerenciadorVeiculos;
     
     private JPanel panelTipoVeiculo; 
     private JPanel panelMarcaEstado; 
@@ -42,8 +40,7 @@ public class VeiculoCadastroPanel extends javax.swing.JPanel {
     /**
      * Creates new form VeiculoCadastroPanel
      */
-    public VeiculoCadastroPanel(GerenciadorVeiculos gv) {
-        this.gerenciadorVeiculos = gv;
+    public VeiculoCadastroPanel() {
         initComponents(); 
         this.setBorder(new EmptyBorder(30, 50, 30, 50));
 
@@ -351,60 +348,7 @@ public class VeiculoCadastroPanel extends javax.swing.JPanel {
     
     private void btnIncluirVeiculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIncluirVeiculoActionPerformed
         // TODO add your handling code here:
-    Marca marca = (Marca) cmbMarca.getSelectedItem();
-    Estado estado = (Estado) cmbEstado.getSelectedItem();
-    Categoria categoria = (Categoria) cmbCategoria.getSelectedItem();
-    String placa = txtPlaca.getText();
-    String anoStr = txtAno.getText();
-    String valorDeCompraStr = txtValorDeCompra.getText();
-
-   
-    if (marca == null || estado == null || categoria == null || placa.isEmpty() || anoStr.isEmpty() || valorDeCompraStr.isEmpty() || cmbModelo.getSelectedItem() == null || cmbModelo.getSelectedItem().equals("Selecione o tipo de veículo")) {
-        JOptionPane.showMessageDialog(this, "Todos os campos devem ser preenchidos ou selecionados.", "Erro de Cadastro", JOptionPane.ERROR_MESSAGE);
-        return;
-    }
-
-    int ano;
-    double valorDeCompra;
-    try {
-        ano = Integer.parseInt(anoStr);
-        String cleanValorStr = valorDeCompraStr.replaceAll("[^\\d,]", "");
-        cleanValorStr = cleanValorStr.replace(",", ".");
-        valorDeCompra = Double.parseDouble(cleanValorStr);
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, "Ano ou Valor de Compra inválidos. Use apenas números. Para o valor, use vírgula como separador decimal (ex: 10000,50).", "Erro de Formato", JOptionPane.ERROR_MESSAGE);
-    return;
-    } 
-
-   
-    if (!placa.matches("[A-Z]{3}-\\d{4}")) {
-        JOptionPane.showMessageDialog(this, "Formato de placa inválido. Use XXX-0000 (ex: ABC-1234).", "Erro de Formato", JOptionPane.ERROR_MESSAGE);
-        return;
-    }
-
-   
-    String modeloSelecionadoString = (String) cmbModelo.getSelectedItem();
-    com.suaempresa.locadora.model.Veiculo novoVeiculo = null;
-
-    if (radioAutomovel.isSelected()) {
-        ModeloAutomovel modelo = ModeloAutomovel.valueOf(modeloSelecionadoString);
-        novoVeiculo = new Automovel(marca, estado, categoria, valorDeCompra, placa, ano, modelo); // 
-    } else if (radioMotocicleta.isSelected()) {
-        ModeloMotocicleta modelo = ModeloMotocicleta.valueOf(modeloSelecionadoString);
-        novoVeiculo = new Motocicleta(marca, estado, categoria, valorDeCompra, placa, ano, modelo); // 
-    } else if (radioVan.isSelected()) {
-        ModeloVan modelo = ModeloVan.valueOf(modeloSelecionadoString);
-        novoVeiculo = new Van(marca, estado, categoria, valorDeCompra, placa, ano, modelo); // 
-    }
-
     
-    if (novoVeiculo != null) {
-        gerenciadorVeiculos.adicionarVeiculo(novoVeiculo);
-        JOptionPane.showMessageDialog(this, "Veículo com placa " + placa + " cadastrado com sucesso!");
-        limparCamposVeiculo(); 
-    } else {
-        JOptionPane.showMessageDialog(this, "Erro: Selecione um tipo de veículo.", "Erro de Lógica", JOptionPane.ERROR_MESSAGE);
-    }
     }//GEN-LAST:event_btnIncluirVeiculoActionPerformed
 
     private void limparCamposVeiculo() {
