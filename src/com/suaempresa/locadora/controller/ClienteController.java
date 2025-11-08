@@ -8,38 +8,94 @@ import com.suaempresa.locadora.model.Cliente;
 import com.suaempresa.locadora.model.dao.ClienteDAO;
 import com.suaempresa.locadora.model.dao.DaoFactory;
 import com.suaempresa.locadora.model.dao.DaoType;
+import com.suaempresa.locadora.view.ClientesPanel;
 
 public class ClienteController {
 
-    private ClienteDAO clienteDAO;
+    private final ClientesPanel view;
+    private final ClienteDAO clienteDAO;
 
-    public ClienteController() {
+    public ClienteController(ClientesPanel view) {
+        this.view = view;
         this.clienteDAO = DaoFactory.getDaoFactory(DaoType.SQL).getClienteDAO();
     }
 
-    public boolean incluirCliente(Cliente cliente) {
+    public void initController() {
+        view.getBtnIncluir().addActionListener(e -> incluirCliente());
+        view.getBtnAtualizar().addActionListener(e -> atualizarCliente());
+        view.getBtnExcluir().addActionListener(e -> excluirCliente());
+        refreshTable();
+    }
+
+    private void incluirCliente() {
         try {
-            if (cliente == null || cliente.getNome() == null || cliente.getNome().isEmpty()) {
-                System.err.println("Cliente ou nome do cliente inválido.");
-                return false;
+            Cliente cliente = view.getClienteFromForm();
+            if (cliente.getNome().isEmpty() || cliente.getSobrenome().isEmpty() || cliente.getRg().isEmpty() || cliente.getCpf().isEmpty() || cliente.getEndereco().isEmpty()) {
+                view.showWarningMessage("Todos os campos devem ser preenchidos.");
+                return;
             }
+            
+            if (clienteDAO.getByCpf(cliente.getCpf()) != null) {
+                view.showErrorMessage("Já existe um cliente com este CPF.");
+                return;
+            }
+
             clienteDAO.insert(cliente);
-            System.out.println("Cliente " + cliente.getNome() + " incluído com sucesso!");
-            return true;
+            view.showSuccessMessage("Cliente incluído com sucesso!");
+            view.limparCamposCliente();
+            refreshTable();
         } catch (Exception e) {
-            System.err.println("Erro ao incluir cliente: " + e.getMessage());
+            view.showErrorMessage("Erro ao incluir cliente: " + e.getMessage());
             e.printStackTrace();
-            return false;
         }
     }
 
-    public java.util.List<Cliente> getAllClientes() {
+    private void atualizarCliente() {
         try {
-            return clienteDAO.getAll();
+            Cliente cliente = view.getClienteFromForm();
+             if (cliente.getCpf().isEmpty()) {
+                view.showWarningMessage("Selecione um cliente na tabela para atualizar.");
+                return;
+            }
+            
+            clienteDAO.update(cliente);
+            view.showSuccessMessage("Cliente atualizado com sucesso!");
+            view.limparCamposCliente();
+            refreshTable();
         } catch (Exception e) {
-            System.err.println("Erro ao buscar clientes: " + e.getMessage());
+            view.showErrorMessage("Erro ao atualizar cliente: " + e.getMessage());
             e.printStackTrace();
-            return new java.util.ArrayList<>();
+        }
+    }
+
+    private void excluirCliente() {
+        try {
+            Cliente cliente = view.getClienteFromForm();
+            if (cliente.getCpf().isEmpty()) {
+                view.showWarningMessage("Selecione um cliente na tabela para excluir.");
+                return;
+            }
+            
+            int response = view.showConfirmDialog("Tem certeza que deseja excluir o cliente " + cliente.getNome() + "?", "Confirmação de Exclusão");
+            if (response == javax.swing.JOptionPane.YES_OPTION) {
+                clienteDAO.delete(cliente);
+                view.showSuccessMessage("Cliente excluído com sucesso!");
+                view.limparCamposCliente();
+                refreshTable();
+            }
+        } catch (Exception e) {
+            view.showErrorMessage("Erro ao excluir cliente: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public void refreshTable() {
+        try {
+            java.util.List<Cliente> clientes = clienteDAO.getAll();
+            view.getClienteTableModel().setClientes(clientes);
+        } catch (Exception e) {
+            view.showErrorMessage("Erro ao carregar clientes: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 }

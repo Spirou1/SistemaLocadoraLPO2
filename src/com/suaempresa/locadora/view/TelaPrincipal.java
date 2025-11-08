@@ -4,6 +4,9 @@
  */
 package com.suaempresa.locadora.view;
 
+
+import com.suaempresa.locadora.controller.ClienteController;
+import com.suaempresa.locadora.controller.HomeController;
 import com.suaempresa.locadora.model.Automovel;
 import com.suaempresa.locadora.model.Categoria;
 import com.suaempresa.locadora.model.Cliente;
@@ -18,6 +21,7 @@ import java.awt.Component;
 import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JScrollPane;
+
 
 /**
  *
@@ -35,6 +39,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private VeiculoLocacaoPanel veiculoLocacaoInstancia; 
     private VeiculoDevolucaoPanel veiculoDevolucaoPanelInstancia;
     private VeiculoVendaPanel veiculoVendaPanelInstancia;
+    
+    private HomeController homeController;
     
 
     /**
@@ -105,9 +111,16 @@ public class TelaPrincipal extends javax.swing.JFrame {
         jPanel2.repaint();    
 
         this.homePanelInstancia = new HomePanel();
+        this.homeController = new HomeController(this.homePanelInstancia);
+        this.homeController.loadData();
         parentPanel.add(new JScrollPane(homePanelInstancia), "card4"); 
 
+ 
         this.clientesPanelInstancia = new ClientesPanel();
+        
+        ClienteController clienteController = new ClienteController(this.clientesPanelInstancia);
+        clienteController.initController();
+        
         parentPanel.add(new JScrollPane(clientesPanelInstancia), "card3"); 
         
         this.veiculoCadastroInstancia = new VeiculoCadastroPanel();
@@ -354,14 +367,15 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnHomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHomeActionPerformed
-        // TODO add your handling code here:
+        if (this.homeController != null) {
+            this.homeController.loadData();
+        }
         cardLayout.show(parentPanel, "card4");
     }//GEN-LAST:event_btnHomeActionPerformed
 
     private void btnGerenciarClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGerenciarClientesActionPerformed
         // TODO add your handling code here:
         cardLayout.show(parentPanel, "card3");
-        clientesPanelInstancia.refreshTable();
     }//GEN-LAST:event_btnGerenciarClientesActionPerformed
 
     private void btnCadastrarVeiculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarVeiculoActionPerformed

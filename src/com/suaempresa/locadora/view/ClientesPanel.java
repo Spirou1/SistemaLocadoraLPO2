@@ -8,95 +8,74 @@ import com.suaempresa.locadora.model.Cliente;
 import com.suaempresa.locadora.ui.tables.ClienteTableModel;
 import java.awt.Component;
 import java.util.ArrayList;
-import java.util.List;
 import javax.swing.Box;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-/**
- *
- * @author enzo
- */
 public class ClientesPanel extends javax.swing.JPanel {
 
-  
     private ClienteTableModel clienteTableModel;
-    private com.suaempresa.locadora.controller.ClienteController clienteController;
 
-    
-    private javax.swing.JPanel panelFormulario;       
-    private javax.swing.JPanel panelNomeSobrenome;    
-    private javax.swing.JPanel panelRgCpf;            
-    private javax.swing.JPanel panelEndereco;        
+    private javax.swing.JPanel panelFormulario;
+    private javax.swing.JPanel panelNomeSobrenome;
+    private javax.swing.JPanel panelRgCpf;
+    private javax.swing.JPanel panelEndereco;
     private javax.swing.JPanel panelBotoes;
-    /**
-     * Creates new form ClientesPanel
-     */
+
     public ClientesPanel() {
-        
         initComponents();
         this.clienteTableModel = new ClienteTableModel(new ArrayList<>());
         jTableClientes.setModel(this.clienteTableModel);
-        this.clienteController = new com.suaempresa.locadora.controller.ClienteController();
         this.setBorder(new EmptyBorder(30, 50, 30, 50));
-        
 
-        
         this.setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.Y_AXIS));
-        this.removeAll(); 
+        this.removeAll();
 
-        this.add(Box.createVerticalStrut(20)); 
+        this.add(Box.createVerticalStrut(20));
 
-        
-        if (jLabel1 != null) { 
-            jLabel1.setAlignmentX(Component.CENTER_ALIGNMENT); 
+        if (jLabel1 != null) {
+            jLabel1.setAlignmentX(Component.CENTER_ALIGNMENT);
             this.add(jLabel1);
         }
-        this.add(Box.createVerticalStrut(5)); 
+        this.add(Box.createVerticalStrut(5));
 
-        if (jLabel2 != null) { 
+        if (jLabel2 != null) {
             jLabel2.setAlignmentX(Component.CENTER_ALIGNMENT);
             this.add(jLabel2);
         }
-        this.add(Box.createVerticalStrut(30)); 
+        this.add(Box.createVerticalStrut(30));
 
-        
-
-      
-        panelNomeSobrenome = new JPanel(); 
-       
+        panelNomeSobrenome = new JPanel();
         panelNomeSobrenome.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 20, 10));
-        panelNomeSobrenome.setOpaque(false); 
+        panelNomeSobrenome.setOpaque(false);
         panelNomeSobrenome.add(createFieldPanel(jLabel3, txtNome));
-        panelNomeSobrenome.add(createFieldPanel(jLabel4, txtSobrenome)); 
-        panelNomeSobrenome.setAlignmentX(Component.CENTER_ALIGNMENT); 
+        panelNomeSobrenome.add(createFieldPanel(jLabel4, txtSobrenome));
+        panelNomeSobrenome.setAlignmentX(Component.CENTER_ALIGNMENT);
         this.add(panelNomeSobrenome);
-        this.add(Box.createVerticalStrut(10)); 
+        this.add(Box.createVerticalStrut(10));
 
-        
-        panelRgCpf = new JPanel(); 
+        panelRgCpf = new JPanel();
         panelRgCpf.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 20, 10));
         panelRgCpf.setOpaque(false);
-        panelRgCpf.add(createFieldPanel(jLabel5, txtRG)); 
-        panelRgCpf.add(createFieldPanel(jLabel6, txtCPF)); 
+        panelRgCpf.add(createFieldPanel(jLabel5, txtRG));
+        panelRgCpf.add(createFieldPanel(jLabel6, txtCPF));
         panelRgCpf.setAlignmentX(Component.CENTER_ALIGNMENT);
         this.add(panelRgCpf);
         this.add(Box.createVerticalStrut(10));
 
-        
-        panelEndereco = new JPanel(); 
+        panelEndereco = new JPanel();
         panelEndereco.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 20, 10));
         panelEndereco.setOpaque(false);
-        panelEndereco.add(createFieldPanel(jLabel7, txtEndereco)); 
+        panelEndereco.add(createFieldPanel(jLabel7, txtEndereco));
         panelEndereco.setAlignmentX(Component.CENTER_ALIGNMENT);
         this.add(panelEndereco);
         this.add(Box.createVerticalStrut(20));
 
-        
-        panelBotoes = new JPanel(); 
-        panelBotoes.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 15, 0)); 
+        panelBotoes = new JPanel();
+        panelBotoes.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 15, 0));
         panelBotoes.setOpaque(false);
 
         if (btnIncluir != null) panelBotoes.add(btnIncluir);
@@ -107,27 +86,24 @@ public class ClientesPanel extends javax.swing.JPanel {
         this.add(panelBotoes);
         this.add(Box.createVerticalStrut(50));
 
-       
-        if (jLabel8 != null) { 
+        if (jLabel8 != null) {
             jLabel8.setAlignmentX(Component.CENTER_ALIGNMENT);
             this.add(jLabel8);
         }
         this.add(Box.createVerticalStrut(10));
 
-        if (jScrollPane2 != null) { 
-            jScrollPane2.setAlignmentX(Component.CENTER_ALIGNMENT); 
-            jScrollPane2.setPreferredSize(new java.awt.Dimension(700, 250)); 
+        if (jScrollPane2 != null) {
+            jScrollPane2.setAlignmentX(Component.CENTER_ALIGNMENT);
+            jScrollPane2.setPreferredSize(new java.awt.Dimension(700, 250));
             this.add(jScrollPane2);
         }
         this.add(Box.createVerticalStrut(50));
 
         this.add(Box.createVerticalGlue());
 
-        this.revalidate(); 
-        this.repaint();    
+        this.revalidate();
+        this.repaint();
 
-
-        
         jTableClientes.getSelectionModel().addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting() && jTableClientes.getSelectedRow() != -1) {
                 int selectedRow = jTableClientes.getSelectedRow();
@@ -141,43 +117,77 @@ public class ClientesPanel extends javax.swing.JPanel {
                     txtEndereco.setText(cliente.getEndereco());
                     txtCPF.setEnabled(false);
                 }
-            } else {
+            } else if (jTableClientes.getSelectedRow() == -1) {
                 limparCamposCliente();
-                txtCPF.setEnabled(true);
             }
         });
     }
-    
+
     private JPanel createFieldPanel(JLabel label, javax.swing.JTextField textField) {
         JPanel pairPanel = new JPanel();
-        pairPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 5, 0)); //
-        pairPanel.setOpaque(false); 
+        pairPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 5, 0));
+        pairPanel.setOpaque(false);
 
         if (label != null) {
             pairPanel.add(label);
         }
         if (textField != null) {
-            textField.setPreferredSize(new java.awt.Dimension(200, 30)); //
+            textField.setPreferredSize(new java.awt.Dimension(200, 30));
             pairPanel.add(textField);
         }
         return pairPanel;
     }
-    
-    
-    
-    private void limparCamposCliente() {
-    txtNome.setText("");
-    txtSobrenome.setText("");
-    txtRG.setText("");
-    txtCPF.setText("");
-    txtEndereco.setText("");
-    txtCPF.setEnabled(true);
-}
 
-    public void refreshTable() {
-        clienteTableModel.setClientes(clienteController.getAllClientes());
+    public void limparCamposCliente() {
+        txtNome.setText("");
+        txtSobrenome.setText("");
+        txtRG.setText("");
+        txtCPF.setText("");
+        txtEndereco.setText("");
+        txtCPF.setEnabled(true);
+        jTableClientes.clearSelection();
     }
 
+    public Cliente getClienteFromForm() {
+        String nome = txtNome.getText();
+        String sobrenome = txtSobrenome.getText();
+        String rg = txtRG.getText();
+        String cpf = txtCPF.getText();
+        String endereco = txtEndereco.getText();
+        return new Cliente(nome, sobrenome, cpf, rg, endereco);
+    }
+
+    public void showSuccessMessage(String message) {
+        JOptionPane.showMessageDialog(this, message, "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    public void showErrorMessage(String message) {
+        JOptionPane.showMessageDialog(this, message, "Erro", JOptionPane.ERROR_MESSAGE);
+    }
+
+    public void showWarningMessage(String message) {
+        JOptionPane.showMessageDialog(this, message, "Atenção", JOptionPane.WARNING_MESSAGE);
+    }
+    
+    public int showConfirmDialog(String message, String title) {
+        return JOptionPane.showConfirmDialog(this, message, title, JOptionPane.YES_NO_OPTION);
+    }
+
+    public ClienteTableModel getClienteTableModel() {
+        return clienteTableModel;
+    }
+
+    public JButton getBtnIncluir() {
+        return btnIncluir;
+    }
+
+    public JButton getBtnAtualizar() {
+        return btnAtualizar;
+    }
+
+    public JButton getBtnExcluir() {
+        return btnExcluir;
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -261,11 +271,6 @@ public class ClientesPanel extends javax.swing.JPanel {
         btnIncluir.setForeground(new java.awt.Color(255, 255, 255));
         btnIncluir.setText("Incluir");
         btnIncluir.setPreferredSize(new java.awt.Dimension(120, 50));
-        btnIncluir.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnIncluirActionPerformed(evt);
-            }
-        });
         add(btnIncluir);
 
         btnAtualizar.setBackground(new java.awt.Color(14, 20, 30));
@@ -273,11 +278,6 @@ public class ClientesPanel extends javax.swing.JPanel {
         btnAtualizar.setForeground(new java.awt.Color(255, 255, 255));
         btnAtualizar.setText("Atualizar");
         btnAtualizar.setPreferredSize(new java.awt.Dimension(120, 50));
-        btnAtualizar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAtualizarActionPerformed(evt);
-            }
-        });
         add(btnAtualizar);
 
         btnExcluir.setBackground(new java.awt.Color(14, 20, 30));
@@ -285,11 +285,6 @@ public class ClientesPanel extends javax.swing.JPanel {
         btnExcluir.setForeground(new java.awt.Color(255, 255, 255));
         btnExcluir.setText("Excluir");
         btnExcluir.setPreferredSize(new java.awt.Dimension(120, 50));
-        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnExcluirActionPerformed(evt);
-            }
-        });
         add(btnExcluir);
 
         jLabel1.setFont(new java.awt.Font("Poppins", 0, 15)); // NOI18N
@@ -333,41 +328,6 @@ public class ClientesPanel extends javax.swing.JPanel {
         add(jLabel8);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnIncluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIncluirActionPerformed
-        String nome = txtNome.getText();
-        String sobrenome = txtSobrenome.getText();
-        String rg = txtRG.getText();
-        String cpf = txtCPF.getText();
-        String endereco = txtEndereco.getText();
-
-        if (nome.isEmpty() || sobrenome.isEmpty() || rg.isEmpty() || cpf.isEmpty() || endereco.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Todos os campos devem ser preenchidos.", "Erro de Validação", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
-        Cliente novoCliente = new Cliente(nome, sobrenome, cpf, rg, endereco);
-
-        if (clienteController.incluirCliente(novoCliente)) {
-            JOptionPane.showMessageDialog(this, "Cliente incluído com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
-            limparCamposCliente();
-            clienteTableModel.setClientes(clienteController.getAllClientes()); // Refresh table
-        } else {
-            JOptionPane.showMessageDialog(this, "Erro ao incluir cliente. Verifique o console para mais detalhes.", "Erro", JOptionPane.ERROR_MESSAGE);
-        }
-    }//GEN-LAST:event_btnIncluirActionPerformed
-
-    private void btnAtualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtualizarActionPerformed
-        // TODO add your handling code here:
-        
-    }//GEN-LAST:event_btnAtualizarActionPerformed
-
-    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
-        // TODO add your handling code here:
-        
-    }//GEN-LAST:event_btnExcluirActionPerformed
-
-
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAtualizar;
     private javax.swing.JButton btnExcluir;

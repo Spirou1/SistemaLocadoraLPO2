@@ -25,6 +25,7 @@ public class ClienteDAOSQL implements ClienteDAO {
     private static final String SELECT_BY_CPF = "SELECT id, nome, sobrenome, cpf, rg, endereco FROM cliente WHERE cpf=?";
     
     private static final String TRUNCATE = "TRUNCATE TABLE cliente RESTART IDENTITY";
+    
 
     private static ClienteDAOSQL instance;
     
@@ -71,7 +72,7 @@ public class ClienteDAOSQL implements ClienteDAO {
             stmtAtualiza.setString(3, cliente.getRg());
             stmtAtualiza.setString(4, cliente.getEndereco());
             
-            stmtAtualiza.setLong(5, cliente.getId()); 
+            stmtAtualiza.setString(5, cliente.getCpf()); 
 
             stmtAtualiza.executeUpdate();
 
@@ -86,7 +87,7 @@ public class ClienteDAOSQL implements ClienteDAO {
              PreparedStatement stmtExcluir = connection.prepareStatement(DELETE)) {
 
             
-            stmtExcluir.setLong(1, cliente.getId());
+            stmtExcluir.setString(1, cliente.getCpf());
 
             stmtExcluir.executeUpdate();
             

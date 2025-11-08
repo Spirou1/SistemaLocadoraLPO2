@@ -80,7 +80,22 @@ public HomePanel() {
         this.revalidate(); 
         this.repaint();   
     }
+
+    public void setTotalClientes(int count) {
+        lblTotalClientes.setText(String.valueOf(count));
+    }
     
+    public void setTotalVeiculos(int count) {
+        lblTotalVeiculos.setText(String.valueOf(count));
+    }
+    
+    public void setVeiculosDisponiveis(long count) {
+        lblVeiculosDisponiveis.setText(String.valueOf(count));
+    }
+    
+    public void setVeiculosLocados(long count) {
+        lblVeiculosLocados.setText(String.valueOf(count));
+    }
     
     private JPanel createAlignedLabelPair(JLabel textLabel, JLabel numberLabel) {
         JPanel pairPanel = new JPanel();
