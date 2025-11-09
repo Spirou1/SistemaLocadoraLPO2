@@ -52,8 +52,14 @@ public class TelaPrincipal extends javax.swing.JFrame {
     public TelaPrincipal() {
        
         
-        initComponents();
+       
+     
+       
+  
+       
         
+       
+        initComponents();        
         cardLayout = (CardLayout) parentPanel.getLayout();
         
         this.setLocationRelativeTo(null);
@@ -168,12 +174,14 @@ public class TelaPrincipal extends javax.swing.JFrame {
         panelHome = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Sistema Locadora 1.0");
+        setTitle("Sistema Locadora 2.0");
 
         jPanel2.setBackground(new java.awt.Color(14, 20, 30));
         jPanel2.setPreferredSize(new java.awt.Dimension(300, 355));
         jPanel2.setVerifyInputWhenFocusTarget(false);
         jPanel2.setLayout(new javax.swing.BoxLayout(jPanel2, javax.swing.BoxLayout.Y_AXIS));
+
+        jLabel4.setIcon(new javax.swing.ImageIcon("/home/enzo/LPO2SistemaLocadoraRefatorado/SistemaLocadoraREFATORADO/car-128.png")); // NOI18N
         jPanel2.add(jLabel4);
 
         jLabel15.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
