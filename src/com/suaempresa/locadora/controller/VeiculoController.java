@@ -32,15 +32,15 @@ import java.util.Locale;
 public class VeiculoController {
     private VeiculoCadastroPanel view;
     private VeiculoDAO veiculoDAO;
-    private LocacaoDAO locacaoDAO; // Declare LocacaoDAO
+    private LocacaoDAO locacaoDAO; 
 
     public VeiculoController(VeiculoCadastroPanel view) {
         this.view = view;
         this.veiculoDAO = DaoFactory.getDaoFactory(DaoType.SQL).getVeiculoDAO();
-        this.locacaoDAO = DaoFactory.getDaoFactory(DaoType.SQL).getLocacaoDAO(); // Initialize LocacaoDAO
+        this.locacaoDAO = DaoFactory.getDaoFactory(DaoType.SQL).getLocacaoDAO(); 
     }
     
-    public VeiculoController() { // Add a default constructor for use in other panels
+    public VeiculoController() {
         this.veiculoDAO = DaoFactory.getDaoFactory(DaoType.SQL).getVeiculoDAO();
         this.locacaoDAO = DaoFactory.getDaoFactory(DaoType.SQL).getLocacaoDAO();
     }
@@ -87,16 +87,13 @@ public class VeiculoController {
                 throw new IllegalArgumentException("Veículo ou locação inválida para devolução.");
             }
             
-            // Store the Locacao object before it's set to null by veiculo.devolver()
+           
             Locacao locacaoParaDeletar = veiculo.getLocacao();
-            
-            // 1. Call devolver() method on the Veiculo object (updates in-memory state)
+                     
             veiculo.devolver();
-            
-            // 2. Update the Veiculo in the database (changes state to DISPONIVEL)
+                      
             veiculoDAO.update(veiculo);
             
-            // 3. Delete the associated Locacao from the database using the stored object
             locacaoDAO.delete(locacaoParaDeletar);
             
         } catch (Exception e) {
@@ -122,6 +119,22 @@ public class VeiculoController {
             System.err.println("Erro ao filtrar veículos: " + e.getMessage());
             e.printStackTrace();
             return null;
+        }
+    }
+    
+    public void venderVeiculo(Veiculo veiculo) {
+        try {
+            if (veiculo == null) {
+                throw new IllegalArgumentException("Veículo inválido para venda.");
+            }
+            
+            veiculo.vender();
+            veiculoDAO.update(veiculo);
+            
+        } catch (Exception e) {
+            System.err.println("Erro ao vender veículo: " + e.getMessage());
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao vender veículo: " + e.getMessage(), e);
         }
     }
 }

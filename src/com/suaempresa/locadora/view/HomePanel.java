@@ -210,7 +210,7 @@ public HomePanel() {
 
         jLabel8.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel8.setText("Linguagem de Programação Orientada a Objetos 1 - DS131");
+        jLabel8.setText("Linguagem de Programação Orientada a Objetos 2 - DS142");
         add(jLabel8);
 
         jLabel7.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N

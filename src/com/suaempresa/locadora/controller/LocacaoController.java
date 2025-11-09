@@ -34,7 +34,7 @@ public class LocacaoController {
         view.getBtnLocar().addActionListener(e -> locarVeiculo());
         view.getBtnBuscarCliente().addActionListener(e -> buscarCliente());
         view.getBtnBuscarVeiculo().addActionListener(e -> buscarVeiculo());
-        loadInitialData(); // Load data when controller is initialized
+        loadInitialData(); 
     }
     
     public void loadInitialData() {
@@ -74,7 +74,7 @@ public class LocacaoController {
         String cpf = view.getCpfCliente();
         logger.info("Searching for client with CPF: " + cpf);
         if (cpf.isEmpty()) {
-            loadAllClients(); // If search field is empty, show all clients
+            loadAllClients();
             return;
         }
         try {
@@ -95,7 +95,7 @@ public class LocacaoController {
     private void buscarVeiculo() {
         String placa = view.getPlacaVeiculo();
         if (placa.isEmpty()) {
-            loadAllAvailableVehicles(); // If search field is empty, show all available vehicles
+            loadAllAvailableVehicles(); 
             return;
         }
         try {

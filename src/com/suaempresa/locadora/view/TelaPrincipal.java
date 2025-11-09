@@ -174,17 +174,15 @@ public class TelaPrincipal extends javax.swing.JFrame {
         jPanel2.setPreferredSize(new java.awt.Dimension(300, 355));
         jPanel2.setVerifyInputWhenFocusTarget(false);
         jPanel2.setLayout(new javax.swing.BoxLayout(jPanel2, javax.swing.BoxLayout.Y_AXIS));
-
-        jLabel4.setIcon(new javax.swing.ImageIcon("/home/enzo/LPO1Trabalho/SistemaLocadoraVeiculos/car-128.png")); // NOI18N
         jPanel2.add(jLabel4);
 
         jLabel15.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
         jLabel15.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel15.setText("Sistema Locadora 1.0");
+        jLabel15.setText("Sistema Locadora 2.0");
         jPanel2.add(jLabel15);
 
         jLabel16.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel16.setText("LPOO1-2025/1");
+        jLabel16.setText("LPOO2-2025/2");
         jPanel2.add(jLabel16);
 
         btnHome.setBackground(new java.awt.Color(14, 20, 30));

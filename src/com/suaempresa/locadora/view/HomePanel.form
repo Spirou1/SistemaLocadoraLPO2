@@ -185,7 +185,7 @@
         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="0" green="0" red="0" type="rgb"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Linguagem de Programa&#xe7;&#xe3;o Orientada a Objetos 1 - DS131"/>
+        <Property name="text" type="java.lang.String" value="Linguagem de Programa&#xe7;&#xe3;o Orientada a Objetos 2 - DS142"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel7">

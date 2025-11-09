@@ -40,11 +40,11 @@ public class VeiculoDAOSQL implements VeiculoDAO {
         "LEFT JOIN automovel a ON v.id = a.id " +
         "LEFT JOIN motocicleta m ON v.id = m.id " +
         "LEFT JOIN van va ON v.id = va.id " +
-        "LEFT JOIN locacao l ON v.id = l.veiculo_id " + // Join with locacao table
-        "LEFT JOIN cliente c ON l.cliente_id = c.id"; // Join with cliente table
+        "LEFT JOIN locacao l ON v.id = l.veiculo_id " +
+        "LEFT JOIN cliente c ON l.cliente_id = c.id"; 
     private static final String SELECT_BY_ID = SELECT_ALL_BASE + " WHERE v.id=?";
     private static final String SELECT_BY_PLACA = SELECT_ALL_BASE + " WHERE v.placa=?";
-    private static final String TRUNCATE_VEICULO = "TRUNCATE TABLE veiculo CASCADE"; // CASCADE para limpar subclasses
+    private static final String TRUNCATE_VEICULO = "TRUNCATE TABLE veiculo CASCADE"; 
     
   
     private static final String INSERT_AUTOMOVEL = "INSERT INTO automovel (id, modelo) VALUES (?, ?)";
@@ -99,14 +99,14 @@ public class VeiculoDAOSQL implements VeiculoDAO {
                 throw new SQLException("Tipo de veículo desconhecido no banco: " + tipoVeiculo);
         }
         
-        // Set the ID on the vehicle object after it's created
+     
         if (veiculo != null) {
             veiculo.setId(id);
             
-            // If the vehicle is LOCADO, try to load its Locacao details
+   
             if (estado == Estado.LOCADO) {
                 long locacaoId = rs.getLong("locacao_id");
-                if (!rs.wasNull()) { // Check if locacao_id was not null
+                if (!rs.wasNull()) { 
                     int dias = rs.getInt("locacao_dias");
                     double valorTotal = rs.getDouble("locacao_valor_total");
                     
@@ -341,11 +341,62 @@ public class VeiculoDAOSQL implements VeiculoDAO {
     
     @Override
     public List<Veiculo> getByTipo(String tipo) {
-        throw new UnsupportedOperationException("Busca por tipo não implementada.");
+        List<Veiculo> veiculos = new ArrayList<>();
+        String sql = SELECT_ALL_BASE + " WHERE v.tipo_veiculo=? AND v.estado='DISPONIVEL'";
+        
+        try (Connection connection = ConnectionFactory.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
+            
+            stmt.setString(1, tipo);
+            
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    veiculos.add(mapResultSetToVeiculo(rs));
+                }
+            }
+            return veiculos;
+            
+        } catch (SQLException | IOException e) {
+            throw new RuntimeException("Erro ao buscar veículos por tipo: " + e.getMessage(), e);
+        }
     }
 
     @Override
     public List<Veiculo> filtrarVeiculos(String tipo, Marca marca, Categoria categoria) {
-        throw new UnsupportedOperationException("Filtro complexo de veículos não implementado.");
+        List<Veiculo> veiculos = new ArrayList<>();
+        StringBuilder sqlBuilder = new StringBuilder(SELECT_ALL_BASE);
+        sqlBuilder.append(" WHERE v.estado='DISPONIVEL'");
+        List<Object> params = new ArrayList<>();
+
+        if (tipo != null && !tipo.isEmpty()) {
+            sqlBuilder.append(" AND v.tipo_veiculo=?");
+            params.add(tipo);
+        }
+        if (marca != null) {
+            sqlBuilder.append(" AND v.marca=?");
+            params.add(marca.name());
+        }
+        if (categoria != null) {
+            sqlBuilder.append(" AND v.categoria=?");
+            params.add(categoria.name());
+        }
+
+        try (Connection connection = ConnectionFactory.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(sqlBuilder.toString())) {
+
+            for (int i = 0; i < params.size(); i++) {
+                stmt.setObject(i + 1, params.get(i));
+            }
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    veiculos.add(mapResultSetToVeiculo(rs));
+                }
+            }
+            return veiculos;
+
+        } catch (SQLException | IOException e) {
+            throw new RuntimeException("Erro ao filtrar veículos: " + e.getMessage(), e);
+        }
     }
 }

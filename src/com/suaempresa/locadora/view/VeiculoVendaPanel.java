@@ -277,16 +277,40 @@ public class VeiculoVendaPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnFiltrarVeiculosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltrarVeiculosActionPerformed
-        // TODO add your handling code here:
-       
+        try {
+            TipoVeiculo tipo = (TipoVeiculo) cmbTipoVeiculoFiltro.getSelectedItem();
+            Marca marca = (Marca) cmbMarcaFiltro.getSelectedItem();
+            Categoria categoria = (Categoria) cmbCategoriaFiltro.getSelectedItem();
+            
+            // Pass null if "Todos" or no selection is desired for a filter
+            String tipoStr = (tipo != null) ? tipo.name() : null;
+            
+            List<Veiculo> veiculosFiltrados = veiculoController.filtrarVeiculos(tipoStr, marca, categoria);
+            veiculoTableModel.setVeiculos(veiculosFiltrados);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Erro ao filtrar veículos: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+            ex.printStackTrace();
+        }
     }//GEN-LAST:event_btnFiltrarVeiculosActionPerformed
 
     private void btnVenderVeiculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVenderVeiculoActionPerformed
-        // TODO add your handling code here:
-        
-    
-
-   
+        if (veiculoSelecionado != null) {
+            int confirm = JOptionPane.showConfirmDialog(this, 
+                                                        "Tem certeza que deseja vender o veículo " + veiculoSelecionado.getPlaca() + "?", 
+                                                        "Confirmar Venda", 
+                                                        JOptionPane.YES_NO_OPTION);
+            if (confirm == JOptionPane.YES_OPTION) {
+                try {
+                    veiculoController.venderVeiculo(veiculoSelecionado);
+                    JOptionPane.showMessageDialog(this, "Veículo vendido com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+                    refreshTable(); // Refresh the table after selling
+                } catch (RuntimeException ex) {
+                    JOptionPane.showMessageDialog(this, "Erro ao vender veículo: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Selecione um veículo para vender.", "Aviso", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_btnVenderVeiculoActionPerformed
 
 

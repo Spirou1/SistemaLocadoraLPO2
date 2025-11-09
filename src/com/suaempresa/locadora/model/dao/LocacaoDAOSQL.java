@@ -139,9 +139,6 @@ public class LocacaoDAOSQL implements LocacaoDAO {
         Calendar dataLocacao = Calendar.getInstance();
         dataLocacao.setTime(rs.getDate("data_locacao"));
 
-        // Assuming Cliente and Veiculo objects are fully formed elsewhere or fetched separately
-        // For simplicity, we'll create dummy objects with just the ID for now.
-        // In a real scenario, you might fetch the full Cliente and Veiculo objects here.
         long clienteId = rs.getLong("cliente_id");
         String clienteNome = rs.getString("cliente_nome");
         String clienteSobrenome = rs.getString("cliente_sobrenome");
@@ -153,8 +150,7 @@ public class LocacaoDAOSQL implements LocacaoDAO {
         
         long veiculoId = rs.getLong("veiculo_id");
         String veiculoPlaca = rs.getString("veiculo_placa");
-        // This is a simplified Veiculo object. In a real app, you'd fetch the full vehicle details.
-        // For now, we'll just set the ID and placa.
+    
         Veiculo veiculo = new Veiculo(null, null, null, 0, veiculoPlaca, 0) {
             @Override
             public double getValorDiariaLocacao() {

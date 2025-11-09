@@ -155,7 +155,6 @@ public class ClienteDAOSQL implements ClienteDAO {
     
     @Override
     public Cliente getByCpf(String cpf) {
-        // Normalize CPF: remove non-digit characters and trim spaces
         String normalizedCpf = cpf.replaceAll("[^0-9]", "").trim();
         
         try (Connection connection = ConnectionFactory.getConnection();
