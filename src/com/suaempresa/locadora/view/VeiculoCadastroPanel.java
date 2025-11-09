@@ -13,6 +13,7 @@ import com.suaempresa.locadora.model.ModeloMotocicleta; //
 import com.suaempresa.locadora.model.ModeloVan; // 
 import com.suaempresa.locadora.model.Motocicleta; // 
 import com.suaempresa.locadora.model.Van; // 
+import com.suaempresa.locadora.model.Veiculo;
 import java.awt.Component;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
@@ -351,7 +352,7 @@ public class VeiculoCadastroPanel extends javax.swing.JPanel {
     
     }//GEN-LAST:event_btnIncluirVeiculoActionPerformed
 
-    private void limparCamposVeiculo() {
+    public void limparCamposVeiculo() {
    
     txtValorDeCompra.setText("");
     txtPlaca.setText("");
@@ -367,6 +368,48 @@ public class VeiculoCadastroPanel extends javax.swing.JPanel {
     radioAutomovel.setSelected(true);
     radioTipoVeiculoActionPerformed(null); 
 }
+    
+    public Veiculo getVeiculoFromForm() throws ParseException {
+        Marca marca = (Marca) cmbMarca.getSelectedItem();
+        Estado estado = (Estado) cmbEstado.getSelectedItem();
+        Categoria categoria = (Categoria) cmbCategoria.getSelectedItem();
+        String modeloStr = (String) cmbModelo.getSelectedItem();
+        
+        String valorStr = txtValorDeCompra.getText();
+        NumberFormat format = NumberFormat.getInstance(new Locale("pt", "BR"));
+        double valor = format.parse(valorStr).doubleValue();
+        
+        String placa = txtPlaca.getText();
+        int ano = Integer.parseInt(txtAno.getText());
+        
+        if (radioAutomovel.isSelected()) {
+            ModeloAutomovel modelo = ModeloAutomovel.valueOf(modeloStr);
+            return new Automovel(marca, estado, categoria, valor, placa, ano, modelo);
+        } else if (radioMotocicleta.isSelected()) {
+            ModeloMotocicleta modelo = ModeloMotocicleta.valueOf(modeloStr);
+            return new Motocicleta(marca, estado, categoria, valor, placa, ano, modelo);
+        } else {
+            ModeloVan modelo = ModeloVan.valueOf(modeloStr);
+            return new Van(marca, estado, categoria, valor, placa, ano, modelo);
+        }
+    }
+    
+    public void showWarningMessage(String message) {
+        JOptionPane.showMessageDialog(this, message, "Atenção", JOptionPane.WARNING_MESSAGE);
+    }
+    
+    public void showErrorMessage(String message) {
+        JOptionPane.showMessageDialog(this, message, "Erro", JOptionPane.ERROR_MESSAGE);
+    }
+    
+    public void showSuccessMessage(String message) {
+        JOptionPane.showMessageDialog(this, message, "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+    }
+    
+    public javax.swing.JButton getBtnIncluirVeiculo() {
+        return btnIncluirVeiculo;
+    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnIncluirVeiculo;

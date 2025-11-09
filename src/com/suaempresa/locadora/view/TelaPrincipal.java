@@ -7,6 +7,7 @@ package com.suaempresa.locadora.view;
 
 import com.suaempresa.locadora.controller.ClienteController;
 import com.suaempresa.locadora.controller.HomeController;
+import com.suaempresa.locadora.controller.VeiculoController;
 import com.suaempresa.locadora.model.Automovel;
 import com.suaempresa.locadora.model.Categoria;
 import com.suaempresa.locadora.model.Cliente;
@@ -124,6 +125,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
         parentPanel.add(new JScrollPane(clientesPanelInstancia), "card3"); 
         
         this.veiculoCadastroInstancia = new VeiculoCadastroPanel();
+        VeiculoController veiculoController = new VeiculoController(this.veiculoCadastroInstancia);
+        veiculoController.initController();
         parentPanel.add(new JScrollPane(veiculoCadastroInstancia), "card2");
         
         this.veiculoLocacaoInstancia = new VeiculoLocacaoPanel();
