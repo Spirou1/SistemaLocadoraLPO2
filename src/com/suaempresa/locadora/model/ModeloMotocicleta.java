@@ -9,5 +9,5 @@ package com.suaempresa.locadora.model;
  * @author enzo
  */
 public enum ModeloMotocicleta {
-    CG125, CBR500;
+    CG125, CBR500, FAZER_250;
 }

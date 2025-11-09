@@ -9,5 +9,5 @@ package com.suaempresa.locadora.model;
  * @author enzo
  */
 public enum ModeloVan {
-    Kombi, Sprinter, Fiorino;
+    Kombi, Sprinter, Fiorino, MASTER, DUCATO;
 }

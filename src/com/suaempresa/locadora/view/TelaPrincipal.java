@@ -8,6 +8,7 @@ package com.suaempresa.locadora.view;
 import com.suaempresa.locadora.controller.ClienteController;
 import com.suaempresa.locadora.controller.HomeController;
 import com.suaempresa.locadora.controller.VeiculoController;
+import com.suaempresa.locadora.controller.LocacaoController;
 import com.suaempresa.locadora.model.Automovel;
 import com.suaempresa.locadora.model.Categoria;
 import com.suaempresa.locadora.model.Cliente;
@@ -42,6 +43,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private VeiculoVendaPanel veiculoVendaPanelInstancia;
     
     private HomeController homeController;
+    private LocacaoController locacaoController;
     
 
     /**
@@ -118,10 +120,6 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
  
         this.clientesPanelInstancia = new ClientesPanel();
-        
-        ClienteController clienteController = new ClienteController(this.clientesPanelInstancia);
-        clienteController.initController();
-        
         parentPanel.add(new JScrollPane(clientesPanelInstancia), "card3"); 
         
         this.veiculoCadastroInstancia = new VeiculoCadastroPanel();
@@ -377,7 +375,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnHomeActionPerformed
 
     private void btnGerenciarClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGerenciarClientesActionPerformed
-        // TODO add your handling code here:
+        this.clientesPanelInstancia.refreshTable();
         cardLayout.show(parentPanel, "card3");
     }//GEN-LAST:event_btnGerenciarClientesActionPerformed
 
@@ -387,18 +385,19 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCadastrarVeiculoActionPerformed
 
     private void btnLocarVeiculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLocarVeiculoActionPerformed
-        // TODO add your handling code here:
+        this.veiculoLocacaoInstancia.refreshTable();
         cardLayout.show(parentPanel, "card5");
+        
     }//GEN-LAST:event_btnLocarVeiculoActionPerformed
 
     private void btnDevolverVeiculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDevolverVeiculoActionPerformed
-        // TODO add your handling code here:
+        this.veiculoDevolucaoPanelInstancia.refreshTable();
         cardLayout.show(parentPanel, "card6");
         
     }//GEN-LAST:event_btnDevolverVeiculoActionPerformed
 
     private void btnVenderVeiculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVenderVeiculoActionPerformed
-        // TODO add your handling code here:
+        this.veiculoVendaPanelInstancia.refreshTable();
         cardLayout.show(parentPanel, "card7");
         
     }//GEN-LAST:event_btnVenderVeiculoActionPerformed

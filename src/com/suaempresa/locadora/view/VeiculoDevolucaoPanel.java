@@ -4,8 +4,7 @@
  */
 package com.suaempresa.locadora.view;
 
-
-
+import com.suaempresa.locadora.controller.VeiculoController;
 import com.suaempresa.locadora.model.Veiculo; 
 import com.suaempresa.locadora.ui.tables.VeiculoTableModel; 
 import java.util.List;
@@ -29,7 +28,7 @@ import javax.swing.border.EmptyBorder;
  */
 public class VeiculoDevolucaoPanel extends javax.swing.JPanel {
 
-
+    private VeiculoController veiculoController;
     private VeiculoTableModel veiculoTableModel; 
     private Veiculo veiculoSelecionado;
     
@@ -38,7 +37,7 @@ public class VeiculoDevolucaoPanel extends javax.swing.JPanel {
      * Creates new form VeiculoDevolucaoPanel
      */
     public VeiculoDevolucaoPanel() {
- 
+        this.veiculoController = new VeiculoController(); // Instantiate the controller
         initComponents(); 
         this.veiculoTableModel = new VeiculoTableModel(new ArrayList<>(), "DEVOLUCAO");
         this.setBorder(new EmptyBorder(30, 50, 30, 50));
@@ -95,6 +94,7 @@ public class VeiculoDevolucaoPanel extends javax.swing.JPanel {
         jTableVeiculosLocados.setModel(veiculoTableModel);
         jTableVeiculosLocados.setAutoCreateRowSorter(true);
         addTableSelectionListener();
+        refreshTable(); // Populate the table initially
     }
     
    
@@ -116,6 +116,12 @@ public class VeiculoDevolucaoPanel extends javax.swing.JPanel {
     });
 }
 
+    public void refreshTable() {
+        List<Veiculo> veiculosLocados = veiculoController.getVeiculosLocados();
+        if (veiculosLocados != null) {
+            veiculoTableModel.setVeiculos(veiculosLocados);
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -182,8 +188,23 @@ public class VeiculoDevolucaoPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnDevolverVeiculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDevolverVeiculoActionPerformed
-        // TODO add your handling code here:
-        
+        if (veiculoSelecionado != null) {
+            int confirm = JOptionPane.showConfirmDialog(this, 
+                                                        "Tem certeza que deseja devolver o veículo " + veiculoSelecionado.getPlaca() + "?", 
+                                                        "Confirmar Devolução", 
+                                                        JOptionPane.YES_NO_OPTION);
+            if (confirm == JOptionPane.YES_OPTION) {
+                try {
+                    veiculoController.devolverVeiculo(veiculoSelecionado);
+                    JOptionPane.showMessageDialog(this, "Veículo devolvido com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+                    refreshTable(); // Refresh the table after devolution
+                } catch (RuntimeException ex) {
+                    JOptionPane.showMessageDialog(this, "Erro ao devolver veículo: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Selecione um veículo para devolver.", "Aviso", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_btnDevolverVeiculoActionPerformed
 
 

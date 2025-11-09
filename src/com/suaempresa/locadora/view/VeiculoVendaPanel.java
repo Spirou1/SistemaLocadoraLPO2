@@ -6,6 +6,7 @@ package com.suaempresa.locadora.view;
 
 
 
+import com.suaempresa.locadora.controller.VeiculoController;
 import com.suaempresa.locadora.model.Veiculo;
 import com.suaempresa.locadora.model.Marca;
 import com.suaempresa.locadora.model.Categoria;
@@ -43,6 +44,7 @@ public class VeiculoVendaPanel extends javax.swing.JPanel {
 
    
     private VeiculoTableModel veiculoTableModel;
+    private VeiculoController veiculoController;
     private Veiculo veiculoSelecionado;
     /**
      * Creates new form VeiculoVendaPanel
@@ -51,7 +53,13 @@ public class VeiculoVendaPanel extends javax.swing.JPanel {
         
         initComponents(); 
         this.veiculoTableModel = new VeiculoTableModel(new ArrayList<>(), false);
+        this.veiculoController = new VeiculoController(); // Initialize the controller
         this.setBorder(new EmptyBorder(30, 50, 30, 50));
+
+        // Populate combo boxes
+        cmbMarcaFiltro.setModel(new DefaultComboBoxModel<>(Marca.values()));
+        cmbCategoriaFiltro.setModel(new DefaultComboBoxModel<>(Categoria.values()));
+        cmbTipoVeiculoFiltro.setModel(new DefaultComboBoxModel<>(TipoVeiculo.values()));
 
         
         this.setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.Y_AXIS)); 
@@ -297,4 +305,11 @@ public class VeiculoVendaPanel extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTableVeiculosParaVenda;
     // End of variables declaration//GEN-END:variables
+
+    public void refreshTable() {
+        List<Veiculo> veiculosDisponiveis = veiculoController.getVeiculosDisponiveis();
+        if (veiculosDisponiveis != null) {
+            veiculoTableModel.setVeiculos(veiculosDisponiveis);
+        }
+    }
 }

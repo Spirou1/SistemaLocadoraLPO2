@@ -36,7 +36,7 @@ public abstract class Veiculo implements VeiculoI {
         if (this.estado == Estado.DISPONIVEL) { 
             double valorDiaria = getValorDiariaLocacao();
             double valorTotal = valorDiaria * dias;
-            this.locacao = new Locacao(dias, valorTotal, data, cliente); 
+            this.locacao = new Locacao(dias, valorTotal, data, cliente, this); 
             this.estado = Estado.LOCADO;
             System.out.println("Veículo " + this.placa + " locado com sucesso!");
         } else {
@@ -91,6 +91,10 @@ public abstract class Veiculo implements VeiculoI {
   
     public Locacao getLocacao() { 
         return locacao;
+    }
+
+    public void setLocacao(Locacao locacao) {
+        this.locacao = locacao;
     }
 
     public String getPlaca() { 

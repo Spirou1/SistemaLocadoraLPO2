@@ -155,10 +155,13 @@ public class ClienteDAOSQL implements ClienteDAO {
     
     @Override
     public Cliente getByCpf(String cpf) {
+        // Normalize CPF: remove non-digit characters and trim spaces
+        String normalizedCpf = cpf.replaceAll("[^0-9]", "").trim();
+        
         try (Connection connection = ConnectionFactory.getConnection();
              PreparedStatement stmtBusca = connection.prepareStatement(SELECT_BY_CPF)) {
             
-            stmtBusca.setString(1, cpf);
+            stmtBusca.setString(1, normalizedCpf);
             
             try (ResultSet rs = stmtBusca.executeQuery()) {
                 if (rs.next()) {
@@ -169,7 +172,7 @@ public class ClienteDAOSQL implements ClienteDAO {
                     String rg = rs.getString("rg");
                     String endereco = rs.getString("endereco");
                     
-                    Cliente cliente = new Cliente(nome, sobrenome, cpf, rg, endereco);
+                    Cliente cliente = new Cliente(nome, sobrenome, normalizedCpf, rg, endereco);
                     cliente.setId(id);
                     return cliente;
                 }

@@ -9,5 +9,5 @@ package com.suaempresa.locadora.model;
  * @author enzo
  */
 public enum Marca {
-    VW, GM, FIAT, HONDA, MERCEDES, RENAULT, TOYOTA, HYUNDAI;
+    VW, GM, FIAT, HONDA, MERCEDES, RENAULT, TOYOTA, HYUNDAI, YAMAHA;
 }

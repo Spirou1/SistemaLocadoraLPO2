@@ -7,6 +7,7 @@ package com.suaempresa.locadora.controller;
 import com.suaempresa.locadora.model.Automovel;
 import com.suaempresa.locadora.model.Categoria;
 import com.suaempresa.locadora.model.Estado;
+import com.suaempresa.locadora.model.Locacao;
 import com.suaempresa.locadora.model.Marca;
 import com.suaempresa.locadora.model.ModeloAutomovel;
 import com.suaempresa.locadora.model.ModeloMotocicleta;
@@ -17,9 +18,11 @@ import com.suaempresa.locadora.model.Veiculo;
 import com.suaempresa.locadora.model.dao.DaoFactory;
 import com.suaempresa.locadora.model.dao.DaoType;
 import com.suaempresa.locadora.model.dao.VeiculoDAO;
+import com.suaempresa.locadora.model.dao.LocacaoDAO; // Import LocacaoDAO
 import com.suaempresa.locadora.view.VeiculoCadastroPanel;
 import java.text.NumberFormat;
 import java.text.ParseException;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -29,10 +32,17 @@ import java.util.Locale;
 public class VeiculoController {
     private VeiculoCadastroPanel view;
     private VeiculoDAO veiculoDAO;
+    private LocacaoDAO locacaoDAO; // Declare LocacaoDAO
 
     public VeiculoController(VeiculoCadastroPanel view) {
         this.view = view;
         this.veiculoDAO = DaoFactory.getDaoFactory(DaoType.SQL).getVeiculoDAO();
+        this.locacaoDAO = DaoFactory.getDaoFactory(DaoType.SQL).getLocacaoDAO(); // Initialize LocacaoDAO
+    }
+    
+    public VeiculoController() { // Add a default constructor for use in other panels
+        this.veiculoDAO = DaoFactory.getDaoFactory(DaoType.SQL).getVeiculoDAO();
+        this.locacaoDAO = DaoFactory.getDaoFactory(DaoType.SQL).getLocacaoDAO();
     }
     
     public void initController() {
@@ -58,6 +68,60 @@ public class VeiculoController {
         } catch (Exception e) {
             view.showErrorMessage("Erro ao incluir veículo: " + e.getMessage());
             e.printStackTrace();
+        }
+    }
+    
+    public List<Veiculo> getVeiculosLocados() {
+        try {
+            return veiculoDAO.getByEstado(Estado.LOCADO);
+        } catch (Exception e) {
+            System.err.println("Erro ao buscar veículos locados: " + e.getMessage());
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
+    public void devolverVeiculo(Veiculo veiculo) {
+        try {
+            if (veiculo == null || veiculo.getLocacao() == null) {
+                throw new IllegalArgumentException("Veículo ou locação inválida para devolução.");
+            }
+            
+            // Store the Locacao object before it's set to null by veiculo.devolver()
+            Locacao locacaoParaDeletar = veiculo.getLocacao();
+            
+            // 1. Call devolver() method on the Veiculo object (updates in-memory state)
+            veiculo.devolver();
+            
+            // 2. Update the Veiculo in the database (changes state to DISPONIVEL)
+            veiculoDAO.update(veiculo);
+            
+            // 3. Delete the associated Locacao from the database using the stored object
+            locacaoDAO.delete(locacaoParaDeletar);
+            
+        } catch (Exception e) {
+            System.err.println("Erro ao devolver veículo: " + e.getMessage());
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao devolver veículo: " + e.getMessage(), e);
+        }
+    }
+    public List<Veiculo> getVeiculosDisponiveis() {
+        try {
+            return veiculoDAO.getByEstado(Estado.DISPONIVEL);
+        } catch (Exception e) {
+            System.err.println("Erro ao buscar veículos disponíveis: " + e.getMessage());
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
+    public List<Veiculo> filtrarVeiculos(String tipo, Marca marca, Categoria categoria) {
+        try {
+            return veiculoDAO.filtrarVeiculos(tipo, marca, categoria);
+        } catch (Exception e) {
+            System.err.println("Erro ao filtrar veículos: " + e.getMessage());
+            e.printStackTrace();
+            return null;
         }
     }
 }

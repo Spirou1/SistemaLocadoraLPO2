@@ -6,6 +6,7 @@ public class DaoFactorySQL extends DaoFactory {
     private static DaoFactorySQL instance;
     private ClienteDAO clienteDAO;
     private VeiculoDAO veiculoDAO;
+    private LocacaoDAO locacaoDAO;
     
 
   
@@ -13,6 +14,7 @@ public class DaoFactorySQL extends DaoFactory {
        
         this.clienteDAO = new ClienteDAOSQL();
         this.veiculoDAO = new VeiculoDAOSQL();
+        this.locacaoDAO = new LocacaoDAOSQL();
        
     }
 
@@ -32,6 +34,11 @@ public class DaoFactorySQL extends DaoFactory {
     @Override
     public VeiculoDAO getVeiculoDAO() {
         return veiculoDAO;
+    }
+    
+    @Override
+    public LocacaoDAO getLocacaoDAO() {
+        return locacaoDAO;
     }
     
 }

@@ -162,6 +162,7 @@ public class VeiculoCadastroPanel extends javax.swing.JPanel {
         cmbMarca.setModel(new DefaultComboBoxModel<>(Marca.values()));
         cmbEstado.setModel(new DefaultComboBoxModel<>(Estado.values()));
         cmbCategoria.setModel(new DefaultComboBoxModel<>(Categoria.values()));
+        cmbEstado.setSelectedItem(Estado.DISPONIVEL);
 
         
         radioAutomovel.addActionListener(e -> radioTipoVeiculoActionPerformed(e));

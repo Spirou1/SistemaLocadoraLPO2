@@ -5,6 +5,8 @@ import com.suaempresa.locadora.model.Estado;
 import com.suaempresa.locadora.model.Marca;
 import com.suaempresa.locadora.model.Categoria;
 import com.suaempresa.locadora.model.Automovel;
+import com.suaempresa.locadora.model.Cliente;
+import com.suaempresa.locadora.model.Locacao;
 import com.suaempresa.locadora.model.Motocicleta;
 import com.suaempresa.locadora.model.Van;
 import com.suaempresa.locadora.model.ModeloAutomovel;
@@ -17,6 +19,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class VeiculoDAOSQL implements VeiculoDAO {
@@ -30,11 +33,15 @@ public class VeiculoDAOSQL implements VeiculoDAO {
         "DELETE FROM veiculo WHERE id=?";
     private static final String SELECT_ALL_BASE =
         "SELECT v.id, v.placa, v.ano, v.valor_compra, v.tipo_veiculo, v.marca, v.estado, v.categoria, " +
-        "a.modelo AS modelo_auto, m.modelo AS modelo_moto, va.modelo AS modelo_van " +
+        "a.modelo AS modelo_auto, m.modelo AS modelo_moto, va.modelo AS modelo_van, " +
+        "l.id AS locacao_id, l.dias AS locacao_dias, l.valor_total AS locacao_valor_total, l.data_locacao AS locacao_data_locacao, " +
+        "c.id AS cliente_id, c.nome AS cliente_nome, c.sobrenome AS cliente_sobrenome, c.cpf AS cliente_cpf, c.rg AS cliente_rg, c.endereco AS cliente_endereco " +
         "FROM veiculo v " +
         "LEFT JOIN automovel a ON v.id = a.id " +
         "LEFT JOIN motocicleta m ON v.id = m.id " +
-        "LEFT JOIN van va ON v.id = va.id";
+        "LEFT JOIN van va ON v.id = va.id " +
+        "LEFT JOIN locacao l ON v.id = l.veiculo_id " + // Join with locacao table
+        "LEFT JOIN cliente c ON l.cliente_id = c.id"; // Join with cliente table
     private static final String SELECT_BY_ID = SELECT_ALL_BASE + " WHERE v.id=?";
     private static final String SELECT_BY_PLACA = SELECT_ALL_BASE + " WHERE v.placa=?";
     private static final String TRUNCATE_VEICULO = "TRUNCATE TABLE veiculo CASCADE"; // CASCADE para limpar subclasses
@@ -92,7 +99,39 @@ public class VeiculoDAOSQL implements VeiculoDAO {
                 throw new SQLException("Tipo de veículo desconhecido no banco: " + tipoVeiculo);
         }
         
-       
+        // Set the ID on the vehicle object after it's created
+        if (veiculo != null) {
+            veiculo.setId(id);
+            
+            // If the vehicle is LOCADO, try to load its Locacao details
+            if (estado == Estado.LOCADO) {
+                long locacaoId = rs.getLong("locacao_id");
+                if (!rs.wasNull()) { // Check if locacao_id was not null
+                    int dias = rs.getInt("locacao_dias");
+                    double valorTotal = rs.getDouble("locacao_valor_total");
+                    
+                    java.sql.Date sqlDate = rs.getDate("locacao_data_locacao");
+                    Calendar dataLocacao = Calendar.getInstance();
+                    if (sqlDate != null) {
+                        dataLocacao.setTime(sqlDate);
+                    }
+
+                    long clienteId = rs.getLong("cliente_id");
+                    String clienteNome = rs.getString("cliente_nome");
+                    String clienteSobrenome = rs.getString("cliente_sobrenome");
+                    String clienteCpf = rs.getString("cliente_cpf");
+                    String clienteRg = rs.getString("cliente_rg");
+                    String clienteEndereco = rs.getString("cliente_endereco");
+                    
+                    Cliente cliente = new Cliente(clienteNome, clienteSobrenome, clienteCpf, clienteRg, clienteEndereco);
+                    cliente.setId(clienteId);
+                    
+                    Locacao locacao = new Locacao(dias, valorTotal, dataLocacao, cliente, veiculo);
+                    locacao.setId(locacaoId);
+                    veiculo.setLocacao(locacao);
+                }
+            }
+        }
         
         return veiculo;
     }
@@ -245,7 +284,20 @@ public class VeiculoDAOSQL implements VeiculoDAO {
 
     @Override
     public void update(Veiculo veiculo) {
-         throw new UnsupportedOperationException("Update de Veículo não implementado.");
+        try (Connection connection = ConnectionFactory.getConnection();
+             PreparedStatement stmtAtualiza = connection.prepareStatement(UPDATE_VEICULO)) {
+
+            stmtAtualiza.setInt(1, veiculo.getAno());
+            stmtAtualiza.setDouble(2, veiculo.valorDeCompra);
+            stmtAtualiza.setString(3, veiculo.getEstado().name());
+            stmtAtualiza.setString(4, veiculo.getCategoria().name());
+            stmtAtualiza.setLong(5, veiculo.getId());
+
+            stmtAtualiza.executeUpdate();
+
+        } catch (SQLException | IOException e) {
+            throw new RuntimeException("Erro ao atualizar veículo: " + e.getMessage(), e);
+        }
     }
     
     @Override
@@ -267,7 +319,24 @@ public class VeiculoDAOSQL implements VeiculoDAO {
 
     @Override
     public List<Veiculo> getByEstado(Estado estado) {
-        throw new UnsupportedOperationException("Busca por estado não implementada.");
+        List<Veiculo> veiculos = new ArrayList<>();
+        String sql = SELECT_ALL_BASE + " WHERE v.estado=?";
+        
+        try (Connection connection = ConnectionFactory.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
+            
+            stmt.setString(1, estado.name());
+            
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    veiculos.add(mapResultSetToVeiculo(rs));
+                }
+            }
+            return veiculos;
+            
+        } catch (SQLException | IOException e) {
+            throw new RuntimeException("Erro ao buscar veículos por estado: " + e.getMessage(), e);
+        }
     }
     
     @Override

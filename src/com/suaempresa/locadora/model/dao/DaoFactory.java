@@ -7,6 +7,7 @@ public abstract class DaoFactory {
     
     public abstract ClienteDAO getClienteDAO();
     public abstract VeiculoDAO getVeiculoDAO();
+    public abstract LocacaoDAO getLocacaoDAO();
     
     public static DaoFactory getDaoFactory(DaoType type) {
         if (type == DaoType.SQL) {

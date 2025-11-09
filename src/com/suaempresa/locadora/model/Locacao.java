@@ -9,23 +9,34 @@ import java.util.Calendar;
  * @author enzo
  */
 public class Locacao {
+    private long id;
     private int dias;
     private double valor;
     private Calendar data;
     private Cliente cliente;
+    private Veiculo veiculo;
     
-    public Locacao(int dias, double valor, Calendar data, Cliente cliente) {
+    public Locacao(int dias, double valor, Calendar data, Cliente cliente, Veiculo veiculo) {
         this.dias = dias;
         this.valor = valor;
         this.data = data;
         this.cliente = cliente;
+        this.veiculo = veiculo;
     }
     
-    public double getValor() {
+    public long getId() {
+        return id;
+    }
+    
+    public void setId(long id) {
+        this.id = id;
+    }
+    
+    public double getValorTotal() {
         return valor;
     }
     
-    public Calendar getData() {
+    public Calendar getDataLocacao() {
         return data;
     }
 
@@ -35,5 +46,13 @@ public class Locacao {
     
     public int getDias() {
         return dias;
+    }
+    
+    public Veiculo getVeiculo() {
+        return veiculo;
+    }
+    
+    public void setVeiculo(Veiculo veiculo) {
+        this.veiculo = veiculo;
     }
 }

@@ -4,6 +4,7 @@
  */
 package com.suaempresa.locadora.view;
 
+import com.suaempresa.locadora.controller.LocacaoController;
 import com.suaempresa.locadora.model.Cliente;
 import com.suaempresa.locadora.model.Veiculo;
 import com.suaempresa.locadora.model.Estado; 
@@ -35,6 +36,7 @@ public class VeiculoLocacaoPanel extends javax.swing.JPanel {
 
     private ClienteTableModel clienteTableModel;
     private VeiculoTableModel veiculoTableModel;
+    private LocacaoController locacaoController;
 
     private Cliente clienteSelecionado;
     private Veiculo veiculoSelecionado;
@@ -53,6 +55,8 @@ public class VeiculoLocacaoPanel extends javax.swing.JPanel {
         initComponents(); 
         this.clienteTableModel = new ClienteTableModel(new ArrayList<>());
         this.veiculoTableModel = new VeiculoTableModel(new ArrayList<>(), true);
+        this.locacaoController = new LocacaoController(this);
+        this.locacaoController.initController();
         this.setBorder(new EmptyBorder(30, 50, 30, 50));
 
         
@@ -185,7 +189,63 @@ public class VeiculoLocacaoPanel extends javax.swing.JPanel {
         });
     }
     
-    private void limparCamposESelecoes() {
+    public void setClientesTableData(List<Cliente> clientes) {
+        clienteTableModel.setClientes(clientes);
+    }
+    
+    public void setVeiculosTableData(List<Veiculo> veiculos) {
+        veiculoTableModel.setVeiculos(veiculos);
+    }
+    
+    public Cliente getClienteSelecionado() {
+        return clienteSelecionado;
+    }
+    
+    public Veiculo getVeiculoSelecionado() {
+        return veiculoSelecionado;
+    }
+    
+    public javax.swing.JButton getBtnBuscarCliente() {
+        return btnBuscarCliente;
+    }
+    
+    public javax.swing.JButton getBtnBuscarVeiculo() {
+        return btnBuscarVeiculo;
+    }
+    
+    public String getCpfCliente() {
+        return txtCPFCliente.getText();
+    }
+    
+    public String getPlacaVeiculo() {
+        return txtPlaca.getText();
+    }
+    
+    public int getDiasLocacao() {
+        try {
+            return Integer.parseInt(txtDiasLocacao.getText());
+        } catch (NumberFormatException e) {
+            return 0;
+        }
+    }
+    
+    public javax.swing.JButton getBtnLocar() {
+        return btnLocarVeiculo;
+    }
+    
+    public void showWarningMessage(String message) {
+        JOptionPane.showMessageDialog(this, message, "Aviso", JOptionPane.WARNING_MESSAGE);
+    }
+
+    public void showErrorMessage(String message) {
+        JOptionPane.showMessageDialog(this, message, "Erro", JOptionPane.ERROR_MESSAGE);
+    }
+
+    public void showSuccessMessage(String message) {
+        JOptionPane.showMessageDialog(this, message, "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+    }
+    
+    public void limparCampos() {
         txtCPFCliente.setText("");
         txtPlaca.setText("");
         txtDiasLocacao.setText("");
@@ -193,6 +253,14 @@ public class VeiculoLocacaoPanel extends javax.swing.JPanel {
         veiculoSelecionado = null;
         jTableClientes.clearSelection();
         jTableVeiculos.clearSelection();
+        clienteTableModel.setClientes(new ArrayList<>()); // Clear table
+        veiculoTableModel.setVeiculos(new ArrayList<>()); // Clear table
+    }
+    
+    public void refreshTable() {
+        if (locacaoController != null) {
+            locacaoController.loadInitialData();
+        }
     }
 
     

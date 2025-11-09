@@ -86,13 +86,13 @@ public class VeiculoTableModel extends AbstractTableModel {
                 return veiculo.getLocacao() != null ? veiculo.getLocacao().getCliente().getNome() + " " + veiculo.getLocacao().getCliente().getSobrenome() : "";
             case "Data Locação":
                 return veiculo.getLocacao() != null ? String.format("%02d/%02d/%d", 
-                                                                    veiculo.getLocacao().getData().get(Calendar.DAY_OF_MONTH),
-                                                                    veiculo.getLocacao().getData().get(Calendar.MONTH) + 1, 
-                                                                    veiculo.getLocacao().getData().get(Calendar.YEAR)) : "";
+                                                                    veiculo.getLocacao().getDataLocacao().get(Calendar.DAY_OF_MONTH),
+                                                                    veiculo.getLocacao().getDataLocacao().get(Calendar.MONTH) + 1, 
+                                                                    veiculo.getLocacao().getDataLocacao().get(Calendar.YEAR)) : "";
             case "Quantidade de dias locado":
                 return veiculo.getLocacao() != null ? veiculo.getLocacao().getDias() : 0;
             case "Valor Locação":
-                return veiculo.getLocacao() != null ? currencyFormat.format(veiculo.getLocacao().getValor()) : "";
+                return veiculo.getLocacao() != null ? currencyFormat.format(veiculo.getLocacao().getValorTotal()) : "";
 
             default: return null;
         }

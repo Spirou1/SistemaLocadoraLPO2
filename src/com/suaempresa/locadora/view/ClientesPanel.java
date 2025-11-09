@@ -4,6 +4,7 @@
  */
 package com.suaempresa.locadora.view;
 
+import com.suaempresa.locadora.controller.ClienteController;
 import com.suaempresa.locadora.model.Cliente;
 import com.suaempresa.locadora.ui.tables.ClienteTableModel;
 import java.awt.Component;
@@ -18,6 +19,7 @@ import javax.swing.border.EmptyBorder;
 public class ClientesPanel extends javax.swing.JPanel {
 
     private ClienteTableModel clienteTableModel;
+    private ClienteController clienteController;
 
     private javax.swing.JPanel panelFormulario;
     private javax.swing.JPanel panelNomeSobrenome;
@@ -29,6 +31,8 @@ public class ClientesPanel extends javax.swing.JPanel {
         initComponents();
         this.clienteTableModel = new ClienteTableModel(new ArrayList<>());
         jTableClientes.setModel(this.clienteTableModel);
+        this.clienteController = new ClienteController(this);
+        this.clienteController.initController();
         this.setBorder(new EmptyBorder(30, 50, 30, 50));
 
         this.setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.Y_AXIS));
@@ -187,6 +191,12 @@ public class ClientesPanel extends javax.swing.JPanel {
 
     public JButton getBtnExcluir() {
         return btnExcluir;
+    }
+    
+    public void refreshTable() {
+        if (clienteController != null) {
+            clienteController.refreshTable();
+        }
     }
 
     /**
