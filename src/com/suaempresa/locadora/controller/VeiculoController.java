@@ -18,7 +18,7 @@ import com.suaempresa.locadora.model.Veiculo;
 import com.suaempresa.locadora.model.dao.DaoFactory;
 import com.suaempresa.locadora.model.dao.DaoType;
 import com.suaempresa.locadora.model.dao.VeiculoDAO;
-import com.suaempresa.locadora.model.dao.LocacaoDAO; // Import LocacaoDAO
+import com.suaempresa.locadora.model.dao.LocacaoDAO; 
 import com.suaempresa.locadora.view.VeiculoCadastroPanel;
 import java.text.NumberFormat;
 import java.text.ParseException;
