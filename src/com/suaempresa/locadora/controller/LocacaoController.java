@@ -70,7 +70,7 @@ public class LocacaoController {
         }
     }
 
-    private void buscarCliente() {
+    public void buscarCliente() {
         String cpf = view.getCpfCliente();
         logger.info("Searching for client with CPF: " + cpf);
         if (cpf.isEmpty()) {

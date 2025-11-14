@@ -354,11 +354,6 @@ public class VeiculoLocacaoPanel extends javax.swing.JPanel {
         btnBuscarCliente.setForeground(new java.awt.Color(255, 255, 255));
         btnBuscarCliente.setText("Buscar Cliente");
         btnBuscarCliente.setPreferredSize(new java.awt.Dimension(200, 50));
-        btnBuscarCliente.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnBuscarClienteActionPerformed(evt);
-            }
-        });
 
         btnBuscarVeiculo.setBackground(new java.awt.Color(14, 20, 30));
         btnBuscarVeiculo.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
@@ -400,10 +395,11 @@ public class VeiculoLocacaoPanel extends javax.swing.JPanel {
         setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.Y_AXIS));
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnBuscarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarClienteActionPerformed
-        // TODO add your handling code here:
-        
-    }//GEN-LAST:event_btnBuscarClienteActionPerformed
+    private void btnBuscarClienteActionPerformed(java.awt.event.ActionEvent evt) {                                                 
+        if (locacaoController != null) {
+            locacaoController.buscarCliente();
+        }
+    }                                                
 
     private void btnBuscarVeiculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarVeiculoActionPerformed
         // TODO add your handling code here:

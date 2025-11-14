@@ -5,18 +5,9 @@
 package com.suaempresa.locadora.view;
 
 
-import com.suaempresa.locadora.controller.ClienteController;
+
 import com.suaempresa.locadora.controller.HomeController;
 import com.suaempresa.locadora.controller.VeiculoController;
-import com.suaempresa.locadora.controller.LocacaoController;
-import com.suaempresa.locadora.model.Automovel;
-import com.suaempresa.locadora.model.Categoria;
-import com.suaempresa.locadora.model.Cliente;
-import com.suaempresa.locadora.model.Estado;
-import com.suaempresa.locadora.model.Marca;
-import com.suaempresa.locadora.model.ModeloAutomovel;
-import com.suaempresa.locadora.model.ModeloMotocicleta;
-import com.suaempresa.locadora.model.Motocicleta;
 import com.suaempresa.locadora.view.HomePanel;
 import java.awt.CardLayout;
 import java.awt.Component;
@@ -43,21 +34,12 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private VeiculoVendaPanel veiculoVendaPanelInstancia;
     
     private HomeController homeController;
-    private LocacaoController locacaoController;
     
 
     /**
      * Creates new form TelaPrincipal
      */
     public TelaPrincipal() {
-       
-        
-       
-     
-       
-  
-       
-        
        
         initComponents();        
         cardLayout = (CardLayout) parentPanel.getLayout();
